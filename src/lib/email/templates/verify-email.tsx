@@ -34,7 +34,7 @@ export default function VerifyEmail({ name, url }: { name: string; url: string }
               <Text>
                 If the button above didn't work, copy and paste this link into your browser:
               </Text>
-              <Link href={url} />
+              <Link href={url}>{url}</Link>
             </Section>
           </Container>
         </Body>
