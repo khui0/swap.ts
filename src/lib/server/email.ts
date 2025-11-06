@@ -1,4 +1,4 @@
-import { renderVerifyEmail } from "$lib/email/render";
+import { renderResetPassword, renderVerifyEmail } from "$lib/email/render";
 import nodemailer from "nodemailer";
 
 import { SMTP_FROM, SMTP_HOST, SMTP_PASSWORD, SMTP_USER } from "$env/static/private";
@@ -25,6 +25,22 @@ export async function sendVerifyEmail(to: string, url: string) {
     from: SMTP_FROM,
     to,
     subject: "Verify your email address",
+    html,
+  });
+}
+
+export async function sendResetPassword(to: string, name: string, url: string) {
+  if (!SMTP_FROM) {
+    console.error("SMTP_FROM is undefined");
+    return;
+  }
+
+  const html = await renderResetPassword(name, url);
+
+  transporter.sendMail({
+    from: SMTP_FROM,
+    to,
+    subject: "Reset your password",
     html,
   });
 }

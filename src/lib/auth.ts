@@ -1,7 +1,7 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "$lib/server/db";
-import { sendVerifyEmail } from "./server/email";
+import { sendResetPassword, sendVerifyEmail } from "./server/email";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -10,6 +10,9 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
+    sendResetPassword: async ({ user, url }) => {
+      await sendResetPassword(user.email, user.name, url);
+    },
   },
   emailVerification: {
     sendVerificationEmail: async ({ user, url }) => {

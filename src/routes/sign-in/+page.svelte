@@ -3,6 +3,7 @@
   import TablerExclamationCircleFilled from "~icons/tabler/exclamation-circle-filled";
   import TablerLogin2 from "~icons/tabler/login-2";
   import TablerAlertTriangleFilled from "~icons/tabler/alert-triangle-filled";
+  import { page } from "$app/state";
 
   const FormState = {
     Idle: 0,
@@ -33,12 +34,20 @@
     } else {
       formState = FormState.Idle;
     }
+    console.log(error?.code);
   }
 
   async function resendVerifyEmail() {
     await authClient.sendVerificationEmail({
       email,
       callbackURL: "/",
+    });
+  }
+
+  async function requestPasswordReset() {
+    await authClient.requestPasswordReset({
+      email,
+      redirectTo: page.url.origin + "/reset-password",
     });
   }
 </script>
@@ -74,11 +83,19 @@
     Remember me
   </label>
   {#if formState === FormState.Error}
-    <p class="inline-flex items-center gap-1 self-stretch text-sm font-medium text-base-content/80">
+    <p
+      class="inline-flex flex-wrap items-center gap-1 self-stretch text-sm font-medium text-base-content/80"
+    >
       {#if errorCode === "EMAIL_NOT_VERIFIED"}
         <span class="text-lg text-warning"><TablerAlertTriangleFilled /></span>
         Pending email verification.
-        <button class="btn btn-xs" onclick={resendVerifyEmail}>Resend</button>
+        <button type="button" class="btn btn-xs" onclick={resendVerifyEmail}>Resend</button>
+      {:else if errorCode === "INVALID_EMAIL_OR_PASSWORD"}
+        <span class="text-lg text-error"><TablerExclamationCircleFilled /></span>
+        {errorMessage}
+        <button type="button" class="btn btn-xs" onclick={requestPasswordReset}
+          >Reset Password</button
+        >
       {:else}
         <span class="text-lg text-error"><TablerExclamationCircleFilled /></span>
         {errorMessage}
