@@ -38,7 +38,6 @@
     } else {
       formState = FormState.Idle;
     }
-    console.log(error?.code);
   }
 
   async function resendVerifyEmail() {
