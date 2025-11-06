@@ -15,7 +15,7 @@ export const transporter = nodemailer.createTransport({
 
 export async function sendVerifyEmail(to: string, url: string) {
   if (!SMTP_FROM) {
-    console.error("No SMTP 'from' address defined");
+    console.error("SMTP_FROM is undefined");
     return;
   }
 
