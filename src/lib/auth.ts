@@ -16,5 +16,6 @@ export const auth = betterAuth({
       await sendVerifyEmail(user.email, url);
     },
     sendOnSignUp: true,
+    autoSignInAfterVerification: true,
   },
 });

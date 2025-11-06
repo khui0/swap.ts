@@ -2,6 +2,7 @@
   import { authClient } from "$lib/auth-client";
   import TablerExclamationCircleFilled from "~icons/tabler/exclamation-circle-filled";
   import TablerLogin2 from "~icons/tabler/login-2";
+  import TablerAlertTriangleFilled from "~icons/tabler/alert-triangle-filled";
 
   const FormState = {
     Idle: 0,
@@ -16,6 +17,7 @@
 
   let formState = $state(FormState.Idle);
   let errorMessage = $state("");
+  let errorCode = $state("");
 
   async function signIn() {
     const { data, error } = await authClient.signIn.email({
@@ -27,9 +29,17 @@
     if (error) {
       formState = FormState.Error;
       errorMessage = error.message || "";
+      errorCode = error.code || "";
     } else {
       formState = FormState.Idle;
     }
+  }
+
+  async function resendVerifyEmail() {
+    await authClient.sendVerificationEmail({
+      email,
+      callbackURL: "/",
+    });
   }
 </script>
 
@@ -65,8 +75,14 @@
   </label>
   {#if formState === FormState.Error}
     <p class="inline-flex items-center gap-1 self-stretch text-sm font-medium text-base-content/80">
-      <span class="text-lg text-error"><TablerExclamationCircleFilled /></span>
-      {errorMessage}
+      {#if errorCode === "EMAIL_NOT_VERIFIED"}
+        <span class="text-lg text-warning"><TablerAlertTriangleFilled /></span>
+        Pending email verification.
+        <button class="btn btn-xs" onclick={resendVerifyEmail}>Resend</button>
+      {:else}
+        <span class="text-lg text-error"><TablerExclamationCircleFilled /></span>
+        {errorMessage}
+      {/if}
     </p>
   {/if}
   <div class="mt-4 flex flex-col gap-2 self-stretch text-center">
