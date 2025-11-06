@@ -24,15 +24,12 @@ export default function VerifyEmail({ name, url }: { name: string; url: string }
           <Container className="rounded-xl bg-white px-4">
             <Section>
               <Text>Hi {name},</Text>
-              <Text>Thank you for signing up. Please verify your email address below:</Text>
-              <Button
-                className="inline-flex h-10 items-center justify-center rounded-lg bg-black px-4 font-semibold text-white"
-                href={url}
-              >
+              <Text>Thank you for signing up. Click the button below to verify your email address:</Text>
+              <Button className="rounded-lg bg-black px-4 py-3 font-semibold text-white" href={url}>
                 Verify Email
               </Button>
               <Text>
-                If the button above didn't work, copy and paste this link into your browser:
+                If the button above doesn't work, copy and paste this link into your browser:
               </Text>
               <Link href={url}>{url}</Link>
             </Section>

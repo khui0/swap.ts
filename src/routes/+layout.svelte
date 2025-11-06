@@ -7,6 +7,7 @@
 
 <svelte:head>
   <link rel="icon" href={favicon} />
+  <title>Tasks</title>
 </svelte:head>
 
 <div class="flex h-full flex-col">
