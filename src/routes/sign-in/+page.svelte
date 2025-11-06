@@ -3,6 +3,7 @@
   import TablerExclamationCircleFilled from "~icons/tabler/exclamation-circle-filled";
   import TablerLogin2 from "~icons/tabler/login-2";
   import TablerAlertTriangleFilled from "~icons/tabler/alert-triangle-filled";
+  import TablerCircleCheckFilled from "~icons/tabler/circle-check-filled";
   import { page } from "$app/state";
 
   const FormState = {
@@ -19,6 +20,9 @@
   let formState = $state(FormState.Idle);
   let errorMessage = $state("");
   let errorCode = $state("");
+
+  let sentVerify = $state(false);
+  let sentReset = $state(false);
 
   async function signIn() {
     const { data, error } = await authClient.signIn.email({
@@ -38,6 +42,7 @@
   }
 
   async function resendVerifyEmail() {
+    sentVerify = true;
     await authClient.sendVerificationEmail({
       email,
       callbackURL: "/",
@@ -45,6 +50,7 @@
   }
 
   async function requestPasswordReset() {
+    sentReset = true;
     await authClient.requestPasswordReset({
       email,
       redirectTo: page.url.origin + "/reset-password",
@@ -83,21 +89,36 @@
     Remember me
   </label>
   {#if formState === FormState.Error}
-    <p
-      class="inline-flex flex-wrap items-center gap-1 self-stretch text-sm font-medium text-base-content/80"
-    >
+    <p class="self-stretch text-sm font-medium text-base-content/80">
       {#if errorCode === "EMAIL_NOT_VERIFIED"}
-        <span class="text-lg text-warning"><TablerAlertTriangleFilled /></span>
+        <span class="text-lg text-warning">
+          <TablerAlertTriangleFilled class="inline h-[1.2em] w-[1.2em] align-middle" />
+        </span>
         Pending email verification.
-        <button type="button" class="btn btn-xs" onclick={resendVerifyEmail}>Resend</button>
+        {#if sentVerify}
+          An email has been sent.
+        {:else}
+          <button type="button" class="btn btn-xs" onclick={resendVerifyEmail}>Resend</button>
+        {/if}
       {:else if errorCode === "INVALID_EMAIL_OR_PASSWORD"}
-        <span class="text-lg text-error"><TablerExclamationCircleFilled /></span>
-        {errorMessage}
-        <button type="button" class="btn btn-xs" onclick={requestPasswordReset}
-          >Reset Password</button
-        >
+        {#if sentReset}
+          <span class="text-lg text-success">
+            <TablerCircleCheckFilled class="inline h-[1.2em] w-[1.2em] align-middle" />
+          </span>
+          If an account with this email exists, an email has been sent.
+        {:else}
+          <span class="text-lg text-error">
+            <TablerExclamationCircleFilled class="inline h-[1.2em] w-[1.2em] align-middle" />
+          </span>
+          {errorMessage}
+          <button type="button" class="btn btn-xs" onclick={requestPasswordReset}>
+            Reset Password
+          </button>
+        {/if}
       {:else}
-        <span class="text-lg text-error"><TablerExclamationCircleFilled /></span>
+        <span class="text-lg text-error">
+          <TablerExclamationCircleFilled class="inline h-[1.2em] w-[1.2em] align-middle" />
+        </span>
         {errorMessage}
       {/if}
     </p>

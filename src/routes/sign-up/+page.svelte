@@ -73,8 +73,10 @@
     bind:value={password}
   />
   {#if formState === FormState.Error}
-    <p class="inline-flex items-center gap-1 self-stretch text-sm font-medium text-base-content/80">
-      <span class="text-lg text-error"><TablerExclamationCircleFilled /></span>
+    <p class="self-stretch text-sm font-medium text-base-content/80">
+      <span class="text-lg text-error">
+        <TablerExclamationCircleFilled class="inline h-[1.2em] w-[1.2em] align-middle" />
+      </span>
       {errorMessage}
     </p>
   {/if}
