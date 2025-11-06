@@ -1,5 +1,7 @@
 <script lang="ts">
   import { authClient } from "$lib/auth-client";
+  import TablerExclamationCircleFilled from "~icons/tabler/exclamation-circle-filled";
+  import TablerUserPlus from "~icons/tabler/user-plus";
 
   const FormState = {
     Idle: 0,
@@ -49,14 +51,34 @@
     e.preventDefault();
   }}
 >
+  <span class="m-0 text-4xl"><TablerUserPlus /></span>
   <h1 class="mb-2 text-2xl font-semibold">Create an account</h1>
   <input type="text" placeholder="Username" class="input w-full" bind:value={name} />
-  <input type="text" placeholder="Email" class="input w-full" bind:value={email} />
-  <input type="password" placeholder="Password" class="input w-full" bind:value={password} />
+  <input
+    type="email"
+    name="email"
+    autocomplete="email"
+    required
+    placeholder="Email"
+    class="input w-full"
+    bind:value={email}
+  />
+  <input
+    type="password"
+    name="password"
+    autocomplete="new-password"
+    required
+    placeholder="Password"
+    class="input w-full"
+    bind:value={password}
+  />
   {#if formState === FormState.Error}
-    <p class="self-stretch text-sm font-medium text-error">{errorMessage}</p>
+    <p class="inline-flex items-center gap-1 self-stretch text-sm font-medium text-base-content/80">
+      <span class="text-lg text-error"><TablerExclamationCircleFilled /></span>
+      {errorMessage}
+    </p>
   {/if}
-  <div class="mt-2 flex flex-col gap-2 self-stretch text-center">
+  <div class="mt-4 flex flex-col gap-2 self-stretch text-center">
     <button class="btn btn-primary" onclick={register}>
       {#if formState === FormState.Loading}
         <span class="loading loading-sm loading-spinner"></span>
@@ -64,7 +86,7 @@
         Create
       {/if}
     </button>
-    <a href="/login" class="link self-center text-sm font-medium text-base-content/50">
+    <a href="/login" class="link self-center text-sm font-medium text-base-content/80">
       Already have an account?
     </a>
   </div>
