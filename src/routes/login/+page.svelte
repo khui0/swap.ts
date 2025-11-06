@@ -49,7 +49,7 @@
   {/if}
   <div class="mt-2 flex flex-col gap-2 self-stretch text-center">
     <button class="btn btn-primary" onclick={signIn}>Sign In</button>
-    <a href="/login" class="link self-center text-sm font-medium text-base-content/50">
+    <a href="/register" class="link self-center text-sm font-medium text-base-content/50">
       Don't have an account?
     </a>
   </div>
