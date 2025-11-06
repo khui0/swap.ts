@@ -9,4 +9,12 @@
   <link rel="icon" href={favicon} />
 </svelte:head>
 
-{@render children()}
+<div class="flex h-full flex-col items-center justify-center gap-2">
+  {@render children()}
+</div>
+
+<style>
+  :global(html, body) {
+    height: 100%;
+  }
+</style>

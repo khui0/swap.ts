@@ -1,2 +1,24 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script lang="ts">
+  import { authClient } from "$lib/auth-client";
+
+  const session = authClient.useSession();
+
+  session.subscribe((value) => {
+    console.log(value.data);
+  });
+</script>
+
+{#if $session.data === null}
+  <a class="btn" href="/register">New Account</a>
+  <a class="btn" href="/login">Sign In</a>
+{:else}
+  <p>{$session.data.user.name}</p>
+  <button
+    class="btn"
+    onclick={async () => {
+      await authClient.signOut();
+    }}
+  >
+    Sign Out
+  </button>
+{/if}
