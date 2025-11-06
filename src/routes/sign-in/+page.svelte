@@ -5,6 +5,7 @@
   import TablerAlertTriangleFilled from "~icons/tabler/alert-triangle-filled";
   import TablerCircleCheckFilled from "~icons/tabler/circle-check-filled";
   import { page } from "$app/state";
+  import { goto } from "$app/navigation";
 
   const FormState = {
     Idle: 0,
@@ -124,8 +125,13 @@
   {/if}
   <div class="mt-4 flex flex-col gap-2 self-stretch text-center">
     <button class="btn btn-primary" onclick={signIn}>Sign In</button>
-    <a href="/sign-up" class="link self-center text-sm font-medium text-base-content/80">
+    <button
+      class="btn btn-ghost"
+      onclick={() => {
+        goto("/sign-up", { replaceState: true });
+      }}
+    >
       Don't have an account?
-    </a>
+    </button>
   </div>
 </form>

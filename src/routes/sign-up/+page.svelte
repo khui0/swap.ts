@@ -3,6 +3,7 @@
   import TablerExclamationCircleFilled from "~icons/tabler/exclamation-circle-filled";
   import TablerUserPlus from "~icons/tabler/user-plus";
   import TablerCircleCheckFilled from "~icons/tabler/circle-check-filled";
+  import { goto } from "$app/navigation";
 
   const FormState = {
     Idle: 0,
@@ -96,8 +97,13 @@
         Create
       {/if}
     </button>
-    <a href="/sign-in" class="link self-center text-sm font-medium text-base-content/80">
+    <button
+      class="btn btn-ghost"
+      onclick={() => {
+        goto("/sign-in", { replaceState: true });
+      }}
+    >
       Already have an account?
-    </a>
+    </button>
   </div>
 </form>

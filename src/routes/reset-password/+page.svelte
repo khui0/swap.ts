@@ -4,6 +4,7 @@
   import TablerExclamationCircleFilled from "~icons/tabler/exclamation-circle-filled";
   import TablerCircleCheckFilled from "~icons/tabler/circle-check-filled";
   import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
 
   const FormState = {
     Idle: 0,
@@ -99,6 +100,13 @@
   {/if}
   <div class="mt-4 flex flex-col gap-2 self-stretch text-center">
     <button class="btn btn-primary" onclick={resetPassword}>Reset</button>
-    <a href="/sign-in" class="btn btn-ghost"> Back to sign in </a>
+    <button
+      class="btn btn-ghost"
+      onclick={() => {
+        goto("/sign-in", { replaceState: true });
+      }}
+    >
+      Back to sign in
+    </button>
   </div>
 </form>
