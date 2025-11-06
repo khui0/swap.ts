@@ -34,6 +34,10 @@ export default function ResetPassword({ name, url }: { name: string; url: string
                 Reset Password
               </Button>
               <Text>
+                If the button above didn't work, copy and paste this link into your browser:
+              </Text>
+              <a href={url}></a>
+              <Text>
                 If you didn't request a password reset, you can safely ignore this message.
               </Text>
               <Text>Do not share this email with anyone to keep your account safe.</Text>
