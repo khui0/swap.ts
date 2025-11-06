@@ -2,6 +2,7 @@
   import { authClient } from "$lib/auth-client";
   import TablerExclamationCircleFilled from "~icons/tabler/exclamation-circle-filled";
   import TablerUserPlus from "~icons/tabler/user-plus";
+  import TablerCircleCheckFilled from "~icons/tabler/circle-check-filled";
 
   const FormState = {
     Idle: 0,
@@ -72,12 +73,19 @@
     class="input w-full"
     bind:value={password}
   />
-  {#if formState === FormState.Error}
+  {#if formState !== FormState.Idle}
     <p class="self-stretch text-sm font-medium text-base-content/80">
-      <span class="text-lg text-error">
-        <TablerExclamationCircleFilled class="inline h-[1.2em] w-[1.2em] align-middle" />
-      </span>
-      {errorMessage}
+      {#if formState === FormState.Error}
+        <span class="text-lg text-error">
+          <TablerExclamationCircleFilled class="inline h-[1.2em] w-[1.2em] align-middle" />
+        </span>
+        {errorMessage}
+      {:else if formState === FormState.Success}
+        <span class="text-lg text-success">
+          <TablerCircleCheckFilled class="inline h-[1.2em] w-[1.2em] align-middle" />
+        </span>
+        Check your inbox to verify your email.
+      {/if}
     </p>
   {/if}
   <div class="mt-4 flex flex-col gap-2 self-stretch text-center">
