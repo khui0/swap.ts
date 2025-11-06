@@ -71,7 +71,7 @@
   {/if}
   <div class="mt-4 flex flex-col gap-2 self-stretch text-center">
     <button class="btn btn-primary" onclick={signIn}>Sign In</button>
-    <a href="/register" class="link self-center text-sm font-medium text-base-content/80">
+    <a href="/sign-up" class="link self-center text-sm font-medium text-base-content/80">
       Don't have an account?
     </a>
   </div>

@@ -86,7 +86,7 @@
         Create
       {/if}
     </button>
-    <a href="/login" class="link self-center text-sm font-medium text-base-content/80">
+    <a href="/sign-in" class="link self-center text-sm font-medium text-base-content/80">
       Already have an account?
     </a>
   </div>
