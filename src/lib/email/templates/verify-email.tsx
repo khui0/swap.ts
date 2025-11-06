@@ -4,6 +4,7 @@ import {
   Container,
   Head,
   Html,
+  Link,
   Preview,
   Section,
   Tailwind,
@@ -33,7 +34,7 @@ export default function VerifyEmail({ name, url }: { name: string; url: string }
               <Text>
                 If the button above didn't work, copy and paste this link into your browser:
               </Text>
-              <a href={url}></a>
+              <Link href={url} />
             </Section>
           </Container>
         </Body>
