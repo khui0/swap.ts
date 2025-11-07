@@ -92,6 +92,10 @@
     <button
       class="floating btn btn-circle"
       onclick={async () => {
+        if (!confirm("Clear completed tasks?")) {
+          return;
+        }
+
         const response = await fetch("/api/task", {
           method: "DELETE",
         });
