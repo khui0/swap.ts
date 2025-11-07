@@ -27,7 +27,7 @@ export async function POST({ request, locals }) {
   const userTaskList = await db
     .select()
     .from(task)
-    .leftJoin(user, eq(task.userId, user.id))
+    .leftJoin(user, eq(task.userId, locals.user.id))
     .orderBy(asc(task.createdAt));
 
   return json({ tasks: JSON.stringify(userTaskList) }, { status: 201 });
@@ -58,7 +58,7 @@ export async function PATCH({ request, locals }) {
   const userTaskList = await db
     .select()
     .from(task)
-    .leftJoin(user, eq(task.userId, user.id))
+    .leftJoin(user, eq(task.userId, locals.user.id))
     .orderBy(asc(task.createdAt));
 
   return json({ tasks: JSON.stringify(userTaskList) }, { status: 201 });
@@ -78,7 +78,7 @@ export async function DELETE({ locals }) {
   const userTaskList = await db
     .select()
     .from(task)
-    .leftJoin(user, eq(task.userId, user.id))
+    .leftJoin(user, eq(task.userId, locals.user.id))
     .orderBy(asc(task.createdAt));
 
   return json({ tasks: JSON.stringify(userTaskList) }, { status: 201 });
