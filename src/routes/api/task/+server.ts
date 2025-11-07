@@ -63,3 +63,23 @@ export async function PATCH({ request, locals }) {
 
   return json({ tasks: JSON.stringify(userTaskList) }, { status: 201 });
 }
+
+export async function DELETE({ locals }) {
+  if (!locals.session) {
+    return error(401);
+  }
+
+  if (!locals.user) {
+    return error(500);
+  }
+
+  await db.delete(task).where(eq(task.completed, true));
+
+  const userTaskList = await db
+    .select()
+    .from(task)
+    .leftJoin(user, eq(task.userId, user.id))
+    .orderBy(asc(task.createdAt));
+
+  return json({ tasks: JSON.stringify(userTaskList) }, { status: 201 });
+}

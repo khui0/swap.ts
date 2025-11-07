@@ -89,7 +89,17 @@
         }}
       />
     </label>
-    <button class="floating btn btn-circle" onclick={async () => {}}>
+    <button
+      class="floating btn btn-circle"
+      onclick={async () => {
+        const response = await fetch("/api/task", {
+          method: "DELETE",
+        });
+
+        const updatedList = JSON.parse((await response.json()).tasks);
+        tasks = updatedList;
+      }}
+    >
       <span><TablerTrash /></span>
     </button>
     <button
