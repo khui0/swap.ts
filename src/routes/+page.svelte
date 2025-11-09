@@ -12,6 +12,7 @@
   import TablerPlus from "~icons/tabler/plus";
   import TablerUsers from "~icons/tabler/users";
   import type { PageProps } from "./$types";
+  import JoinGroupModal from "$lib/components/group/join-group-modal.svelte";
 
   let { data }: PageProps = $props();
   console.log(data.groups);
@@ -22,6 +23,7 @@
   let deleteAccountConfirm = <Confirm>$state();
 
   let createGroupModal = <CreateGroupModal>$state();
+  let joinGroupModal = <JoinGroupModal>$state();
 </script>
 
 <div class="flex w-full max-w-xl flex-col gap-2 p-4">
@@ -87,12 +89,12 @@
       {/if}
     </ul>
     <div class="grid grid-cols-2 gap-2">
-      <button class="btn" onclick={() => {}}
-        ><TablerPlus />
+      <button class="btn" onclick={joinGroupModal.show}>
+        <TablerPlus />
         Join Group
       </button>
-      <button class="btn" onclick={createGroupModal.show}
-        ><TablerPencil />
+      <button class="btn" onclick={createGroupModal.show}>
+        <TablerPencil />
         Create Group
       </button>
     </div>
@@ -125,18 +127,7 @@
 
 <CreateGroupModal bind:this={createGroupModal} />
 
-<!-- <Modal title="Join Group" bind:this={joinGroupModal}>
-  <input
-    type="text"
-    class="input w-full"
-    placeholder="{page.url.origin}/ABC123 or ABC123"
-    bind:value={groupLink}
-  />
-  <form method="dialog" class="my-1 flex gap-2">
-    <button class="btn flex-1">Cancel</button>
-    <button class="btn flex-1 btn-primary">Join</button>
-  </form>
-</Modal> -->
+<JoinGroupModal bind:this={joinGroupModal} />
 
 <Confirm
   bind:this={deleteAccountConfirm}

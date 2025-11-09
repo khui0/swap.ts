@@ -16,7 +16,7 @@ export async function load({ locals, params }) {
       })
       .from(swapGroup)
       .leftJoin(user, eq(swapGroup.ownerId, user.id))
-      .where(and(eq(swapGroup.code, params.slug), eq(swapGroup.ownerId, locals.user.id)));
+      .where(and(eq(swapGroup.code, params.code), eq(swapGroup.ownerId, locals.user.id)));
 
     return {
       group,
