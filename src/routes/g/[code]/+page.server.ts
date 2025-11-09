@@ -40,14 +40,35 @@ export async function load({ locals, params }) {
         id: user.id,
         name: user.name,
         message: swapGroupMember.message,
+        hiddenMessage: swapGroupMember.hiddenMessage,
       })
       .from(swapGroupMember)
       .leftJoin(user, eq(swapGroupMember.userId, user.id))
       .where(eq(swapGroupMember.groupId, group.id));
 
+    const self = (
+      await db
+        .select({
+          name: user.name,
+          message: swapGroupMember.message,
+          hiddenMessage: swapGroupMember.hiddenMessage,
+        })
+        .from(swapGroupMember)
+        .leftJoin(user, eq(swapGroupMember.userId, user.id))
+        .where(
+          and(eq(swapGroupMember.groupId, group.id), eq(swapGroupMember.userId, locals.user.id)),
+        )
+    )[0];
+
     return {
       group,
-      members,
+      self,
+      members: members.map((user) => ({
+        id: user.id,
+        name: user.name,
+        message: user.hiddenMessage ? "" : user.message,
+        hiddenMessage: user.hiddenMessage,
+      })),
       isOwner: group.owner?.id === locals.user.id,
     };
   } else {

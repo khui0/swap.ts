@@ -1,16 +1,19 @@
 <script lang="ts">
-  import type { PageProps } from "./$types";
-  import TablerTrash from "~icons/tabler/trash";
-  import TablerPencil from "~icons/tabler/pencil";
-  import TablerLock from "~icons/tabler/lock";
-  import Confirm from "$lib/components/modal/confirm.svelte";
   import { goto } from "$app/navigation";
-  import Modal from "$lib/components/modal/modal.svelte";
   import EditGroupModal from "$lib/components/group/edit-group-modal.svelte";
+  import EditMessageModal from "$lib/components/group/edit-message-modal.svelte";
+  import Confirm from "$lib/components/modal/confirm.svelte";
+  import TablerLock from "~icons/tabler/lock";
+  import TablerPencil from "~icons/tabler/pencil";
+  import TablerTrash from "~icons/tabler/trash";
+  import type { PageProps } from "./$types";
+  import { authClient } from "$lib/auth-client";
 
   let { data }: PageProps = $props();
 
-  let addMyMessageModal = <Modal>$state();
+  const session = authClient.useSession();
+
+  let editMessageModal = <EditMessageModal>$state();
   let editGroupModal = <EditGroupModal>$state();
   let deleteGroupConfirm = <Confirm>$state();
 
@@ -37,7 +40,12 @@
       <p>{data.group.description.substring(0, 250)}</p>
     </div>
     <div class="flex shrink-0 gap-2">
-      <button class="btn" onclick={addMyMessageModal.show}>Add My Message</button>
+      <button
+        class="btn"
+        onclick={() => {
+          editMessageModal.show(data.self.message || "", data.self.hiddenMessage || false);
+        }}>Edit Message</button
+      >
       {#if data.isOwner}
         <button
           aria-label="Edit group"
@@ -79,7 +87,13 @@
       <div class="flex h-20 justify-between rounded-field bg-base-200 px-4 py-3">
         <div class="flex flex-col justify-between">
           <h2 class="text-2xl text-base-content">{member.name}</h2>
-          <p class="text-sm text-base-content/80">{member.message || "No message"}</p>
+          <p class="text-sm text-base-content/80">
+            {#if member.id === $session.data?.user.id}
+              {data.self.message || "No message"}{data.self.hiddenMessage ? " (Hidden)" : ""}
+            {:else}
+              {member.hiddenMessage ? "(Hidden)" : member.message || "No message"}
+            {/if}
+          </p>
         </div>
         <div class="flex items-center justify-between gap-2">
           <button class="btn">Edit Restrictions</button>
@@ -89,11 +103,7 @@
   </ul>
 </div>
 
-<Modal title="Message" bind:this={addMyMessageModal}>
-  <input type="text" class="input w-full" placeholder="Leave a message for everyone else to see" />
-  <p class="text-end text-xs font-semibold text-base-content/50">0/150</p>
-  <button class="btn">Save</button>
-</Modal>
+<EditMessageModal code={data.group.code} bind:this={editMessageModal} />
 
 <EditGroupModal code={data.group.code} bind:this={editGroupModal} />
 
