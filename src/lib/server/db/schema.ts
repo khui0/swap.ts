@@ -96,6 +96,7 @@ export const swapGroupMember = pgTable(
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
     message: text("message"),
+    privateMessage: boolean("private_message"),
   },
   (table) => [uniqueIndex("unique_member_per_group").on(table.groupId, table.userId)],
 );

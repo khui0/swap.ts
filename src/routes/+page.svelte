@@ -64,19 +64,25 @@
             href="/g/{group.code}"
           >
             <div class="flex items-start justify-between">
-              <div class="flex items-center gap-2">
-                <h2 class="text-2xl text-base-content">{group.name}</h2>
+              <div class="grid grid-cols-[1fr_auto] gap-2">
+                <h2
+                  class="overflow-hidden text-2xl text-ellipsis whitespace-nowrap text-base-content"
+                >
+                  {group.name}
+                </h2>
                 {#if group.closed}
                   <span class="text-xl"><TablerLock /></span>
                 {/if}
               </div>
-              <p class="container-badge">
+              <p class="container-badge shrink-0">
                 Updated {dayjs(group.updatedAt).from(dayjs())}
               </p>
             </div>
-            <div class="flex items-end justify-between text-base-content/80">
-              <p class="text-sm">{group.description}</p>
-              <p class="text-sm">{group.owner}</p>
+            <div class="grid grid-cols-[1fr_auto] text-base-content/80 gap-2">
+              <p class="overflow-hidden text-sm text-ellipsis whitespace-nowrap">
+                {group.description}
+              </p>
+              <p class="overflow-hidden text-sm text-ellipsis whitespace-nowrap">{group.owner}</p>
             </div>
           </a>
         {/each}
