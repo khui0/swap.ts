@@ -126,3 +126,27 @@ export const swapGroupMatch = pgTable(
     uniqueIndex("unique_pair_per_group").on(table.groupId, table.senderId, table.recipientId),
   ],
 );
+
+export const swapGroupRestriction = pgTable(
+  "swap_group_restriction",
+  {
+    id: serial("id").primaryKey(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+    groupId: integer("group_id")
+      .notNull()
+      .references(() => swapGroup.id, { onDelete: "cascade" }),
+    senderId: text("sender_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    recipientId: text("recipient_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+  },
+  (table) => [
+    uniqueIndex("unique_restriction_per_group").on(table.groupId, table.senderId, table.recipientId),
+  ],
+);
