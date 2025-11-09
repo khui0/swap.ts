@@ -71,11 +71,16 @@ export const verification = pgTable("verification", {
 export const swapGroup = pgTable("swap_group", {
   id: serial("id").primaryKey(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .notNull(),
   ownerId: text("owner_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
   description: text("description").notNull(),
+  code: text("code").notNull().unique(),
   closed: boolean("closed"),
 });
 

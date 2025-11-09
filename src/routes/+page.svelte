@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { page } from "$app/state";
   import { authClient } from "$lib/auth-client";
   import ChangeEmail from "$lib/components/auth/change-email.svelte";
   import ChangePassword from "$lib/components/auth/change-password.svelte";
@@ -10,18 +9,23 @@
   import TablerPencil from "~icons/tabler/pencil";
   import TablerPlus from "~icons/tabler/plus";
   import type { PageProps } from "./$types";
+  import CreateGroupModal from "$lib/components/group/create-group-modal.svelte";
+  import TablerLock from "~icons/tabler/lock";
+  import TablerUsers from "~icons/tabler/users";
+  import dayjs from "dayjs";
 
   let { data }: PageProps = $props();
+  console.log(data.groups);
 
   const session = authClient.useSession();
 
   let accountModal = <Modal>$state();
-  let joinGroupModal = <Modal>$state();
-  let createGroupModal = <Modal>$state();
   let deleteAccountConfirm = <Confirm>$state();
+
+  let createGroupModal = <CreateGroupModal>$state();
 </script>
 
-<div class="m-4 flex w-full max-w-xl flex-col gap-2">
+<div class="flex w-full max-w-xl flex-col gap-2 p-4">
   <div class="flex flex-wrap items-center justify-between gap-2">
     <h1 class="mb-1 text-4xl">{APP_NAME}</h1>
     <div class="flex items-center gap-2">
@@ -51,24 +55,44 @@
     <a class="btn btn-ghost" href="/sign-in">Sign into existing account</a>
   {:else}
     <ul class="flex flex-col gap-2">
-      <div class="flex h-20 items-center justify-center container-dotted">
-        <p class="text-sm font-medium text-base-content/50">You aren't in any groups</p>
-      </div>
+      {#if data.groups?.length || 0 > 0}
+        {#each data.groups as group}
+          <a
+            class="flex h-20 flex-col justify-between rounded-field bg-base-200 px-4 py-3"
+            href="/g/{group.code}"
+          >
+            <div class="flex items-start justify-between">
+              <div class="flex items-center gap-2">
+                <h2 class="text-2xl text-base-content">{group.name}</h2>
+                {#if group.closed}
+                  <span class="text-xl"><TablerLock /></span>
+                {/if}
+              </div>
+              <p
+                class="-mx-1 inline-flex items-center gap-1 rounded-field bg-base-300 px-2 text-sm font-medium"
+              >
+                {group.memberCount}
+                <span class="text-xs"><TablerUsers /></span>
+              </p>
+            </div>
+            <div class="flex items-end justify-between text-base-content/80">
+              <p class="text-sm">{group.description}</p>
+              <p class="text-sm">{group.owner}</p>
+            </div>
+          </a>
+        {/each}
+      {:else}
+        <div class="flex h-20 items-center justify-center container-dotted">
+          <p class="text-sm font-medium text-base-content/50">You aren't in any groups</p>
+        </div>
+      {/if}
     </ul>
     <div class="grid grid-cols-2 gap-2">
-      <button
-        class="btn"
-        onclick={() => {
-          joinGroupModal?.show();
-        }}
+      <button class="btn" onclick={() => {}}
         ><TablerPlus />
         Join Group
       </button>
-      <button
-        class="btn"
-        onclick={() => {
-          createGroupModal?.show();
-        }}
+      <button class="btn" onclick={createGroupModal.show}
         ><TablerPencil />
         Create Group
       </button>
@@ -87,14 +111,7 @@
   </div>
   <div class="flex flex-col gap-2 container-dotted border-error p-4">
     <h2 class="leading-none text-error-content">Danger Zone</h2>
-    <button
-      class="btn btn-error"
-      onclick={() => {
-        deleteAccountConfirm.prompt();
-      }}
-    >
-      Delete Account
-    </button>
+    <button class="btn btn-error" onclick={deleteAccountConfirm.prompt}> Delete Account </button>
   </div>
   <button
     aria-label="Sign out"
@@ -107,21 +124,20 @@
   </button>
 </Modal>
 
-<Modal title="Join Group" bind:this={joinGroupModal}>
-  <input type="text" class="input w-full" placeholder="{page.url.origin}/ABC123 or ABC123" />
-  <form method="dialog" class="my-1 flex gap-2">
-    <button class="btn flex-1">Cancel</button>
-    <button class="btn flex-1 btn-primary" onclick={() => {}}> Join </button>
-  </form>
-</Modal>
+<CreateGroupModal bind:this={createGroupModal} />
 
-<Modal title="Create Group" bind:this={createGroupModal}>
-  <input type="text" class="input w-full" placeholder="Group Name" />
+<!-- <Modal title="Join Group" bind:this={joinGroupModal}>
+  <input
+    type="text"
+    class="input w-full"
+    placeholder="{page.url.origin}/ABC123 or ABC123"
+    bind:value={groupLink}
+  />
   <form method="dialog" class="my-1 flex gap-2">
     <button class="btn flex-1">Cancel</button>
-    <button class="btn flex-1 btn-primary" onclick={() => {}}> Create </button>
+    <button class="btn flex-1 btn-primary">Join</button>
   </form>
-</Modal>
+</Modal> -->
 
 <Confirm
   bind:this={deleteAccountConfirm}
