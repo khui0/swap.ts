@@ -10,19 +10,21 @@ export async function POST({ locals, params }) {
 
   const code = params.code;
 
-  const row = await db
-    .select({ groupId: swapGroup.id })
-    .from(swapGroup)
-    .where(eq(swapGroup.code, code));
+  const group = (
+    await db
+      .select({ groupId: swapGroup.id, ownerId: swapGroup.ownerId })
+      .from(swapGroup)
+      .where(eq(swapGroup.code, code))
+  )[0];
 
-  if (row.length === 0) {
+  if (!group) {
     return error(400, "Group does not exist");
   }
 
   await db
     .insert(swapGroupMember)
     .values({
-      groupId: row[0].groupId,
+      groupId: group.groupId,
       userId: locals.user.id,
       message: "",
     })

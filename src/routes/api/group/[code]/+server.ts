@@ -11,16 +11,18 @@ export async function PATCH({ request, locals, params }) {
 
   const code = params.code;
 
-  const row = await db
-    .select({ groupId: swapGroup.id, ownerId: swapGroup.ownerId })
-    .from(swapGroup)
-    .where(eq(swapGroup.code, code));
+  const group = (
+    await db
+      .select({ groupId: swapGroup.id, ownerId: swapGroup.ownerId })
+      .from(swapGroup)
+      .where(eq(swapGroup.code, code))
+  )[0];
 
-  if (row.length === 0) {
+  if (!group) {
     return error(400, "Group does not exist");
   }
 
-  if (row[0].ownerId !== locals.user.id) {
+  if (group.ownerId !== locals.user.id) {
     return error(403, "Unauthorized");
   }
 
