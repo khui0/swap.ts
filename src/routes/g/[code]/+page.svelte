@@ -20,15 +20,21 @@
       <p>{data.group.description}</p>
     </div>
     <div class="flex gap-2">
+      <button class="btn">Add My Message</button>
       {#if data.isOwner}
         <button aria-label="Edit group" class="btn btn-circle"><TablerPencil /></button>
         <button aria-label="Delete group" class="btn btn-circle"><TablerTrash /></button>
       {:else}
-        <button class="btn">Leave group</button>
+        <button class="btn">Leave Group</button>
       {/if}
     </div>
   </div>
   <ul class="flex flex-col gap-2">
+    {#if data.isOwner}
+      <div class="flex h-20 items-center justify-center container-dotted p-4">
+        <button class="btn">Generate Matches</button>
+      </div>
+    {/if}
     {#if !data.group.closed}
       <div class="flex h-20 items-center justify-center container-dotted p-4">
         <p class="text-sm font-medium text-base-content/50">
@@ -37,12 +43,13 @@
       </div>
     {/if}
     {#each data.members as member}
-      <div class="flex h-20 flex-col justify-between rounded-field bg-base-200 px-4 py-3">
-        <div class="flex items-start justify-between">
+      <div class="flex h-20 justify-between rounded-field bg-base-200 px-4 py-3">
+        <div class="flex flex-col justify-between">
           <h2 class="text-2xl text-base-content">{member.name}</h2>
+          <p class="text-sm text-base-content/80">{member.message || "No message"}</p>
         </div>
-        <div class="flex items-end justify-between text-base-content/80">
-          <p class="text-sm">{member.message || "No message"}</p>
+        <div class="flex gap-2 justify-between">
+          
         </div>
       </div>
     {/each}
