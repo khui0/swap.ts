@@ -1,10 +1,7 @@
 <script lang="ts">
   import { authClient } from "$lib/auth-client";
-  import TablerKey from "~icons/tabler/key";
   import TablerExclamationCircleFilled from "~icons/tabler/exclamation-circle-filled";
   import TablerCircleCheckFilled from "~icons/tabler/circle-check-filled";
-  import { onMount } from "svelte";
-  import { goto } from "$app/navigation";
 
   const FormState = {
     Idle: 0,
@@ -14,25 +11,15 @@
 
   type FormState = (typeof FormState)[keyof typeof FormState];
 
-  let token: string | null = $state(null);
-
   let formState = $state(FormState.Idle);
   let errorMessage = $state("");
   let errorCode = $state("");
 
+  let currentPassword = $state("");
   let newPassword = $state("");
   let confirmPassword = $state("");
 
-  onMount(() => {
-    token = new URLSearchParams(window.location.search).get("token");
-  });
-
-  async function resetPassword() {
-    if (!token) {
-      console.error("No token provided");
-      return;
-    }
-
+  async function changePassword() {
     if (confirmPassword !== newPassword) {
       formState = FormState.Error;
       errorMessage = "Passwords don't match";
@@ -40,9 +27,10 @@
       return;
     }
 
-    const { data, error } = await authClient.resetPassword({
+    const { data, error } = await authClient.changePassword({
       newPassword,
-      token,
+      currentPassword,
+      revokeOtherSessions: true,
     });
 
     if (error) {
@@ -51,28 +39,35 @@
       errorCode = error.code || "";
     } else {
       formState = FormState.Success;
+      currentPassword = "";
+      newPassword = "";
+      confirmPassword = "";
     }
   }
 </script>
 
-<span class="m-0 text-4xl"><TablerKey /></span>
-<h1 class="mb-2 text-2xl font-semibold">Reset password</h1>
 <input
   type="password"
   name="password"
-  autocomplete="new-password"
-  required
-  placeholder="Password"
+  autocomplete="current-password"
   class="input w-full"
+  placeholder="Current Password"
+  bind:value={currentPassword}
+/>
+<input
+  type="password"
+  name="new-password"
+  autocomplete="new-password"
+  class="input w-full"
+  placeholder="New Password"
   bind:value={newPassword}
 />
 <input
   type="password"
   name="confirm-password"
   autocomplete="new-password"
-  required
-  placeholder="Confirm Password"
   class="input w-full"
+  placeholder="Confirm Password"
   bind:value={confirmPassword}
 />
 {#if formState !== FormState.Idle}
@@ -90,14 +85,4 @@
     {/if}
   </p>
 {/if}
-<div class="mt-4 flex flex-col gap-2 self-stretch text-center">
-  <button class="btn btn-primary" onclick={resetPassword}>Reset</button>
-  <button
-    class="btn btn-ghost"
-    onclick={() => {
-      goto("/sign-in", { replaceState: true });
-    }}
-  >
-    Back to sign in
-  </button>
-</div>
+<button class="btn" onclick={changePassword}>Change</button>

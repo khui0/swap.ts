@@ -63,10 +63,14 @@
   h4,
   h5,
   h6 {
-    @apply text-sm font-semibold text-base-content/80 uppercase;
+    @apply text-sm font-semibold text-base-content/80;
   }
 
   h1 {
-    @apply text-4xl font-bold;
+    @apply text-3xl font-bold;
   }
+}
+
+@utility container-dotted {
+  @apply rounded-field border-2 border-dashed;
 }
