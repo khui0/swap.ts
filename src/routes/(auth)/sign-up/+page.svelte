@@ -49,7 +49,7 @@
 
 <span class="m-0 text-4xl"><TablerUserPlus /></span>
 <h1 class="mb-2 text-2xl font-semibold">Create an account</h1>
-<input type="text" placeholder="Username" class="input w-full" bind:value={name} />
+<input type="text" placeholder="Display Name" class="input w-full" bind:value={name} />
 <input
   type="email"
   name="email"

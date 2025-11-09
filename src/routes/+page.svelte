@@ -4,24 +4,7 @@
 
   let { data }: PageProps = $props();
 
-  let tasks = $state(data.tasks);
-
   const session = authClient.useSession();
-
-  let taskInput = $state("");
-
-  async function createTask() {
-    const response = await fetch("/api/task", {
-      method: "POST",
-      body: JSON.stringify({
-        content: taskInput,
-      }),
-    });
-    taskInput = "";
-
-    const updatedList = JSON.parse((await response.json()).tasks);
-    tasks = updatedList;
-  }
 </script>
 
 {#if $session.data === null}

@@ -1,4 +1,12 @@
-import { boolean, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  integer,
+  pgTable,
+  serial,
+  text,
+  timestamp,
+  uniqueIndex,
+} from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -60,10 +68,55 @@ export const verification = pgTable("verification", {
     .notNull(),
 });
 
-export const task = pgTable("task", {
+export const swapGroup = pgTable("swap_group", {
   id: serial("id").primaryKey(),
-  userId: text("user_id").notNull(),
-  content: text("text").notNull(),
-  completed: boolean(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+  ownerId: text("owner_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  closed: boolean("closed"),
 });
+
+export const swapGroupMember = pgTable(
+  "swap_group_member",
+  {
+    id: serial("id").primaryKey(),
+    joinedAt: timestamp("joined_at").defaultNow().notNull(),
+    groupId: integer("group_id")
+      .notNull()
+      .references(() => swapGroup.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    message: text("message"),
+  },
+  (table) => [uniqueIndex("unique_member_per_group").on(table.groupId, table.userId)],
+);
+
+export const swapGroupMatch = pgTable(
+  "swap_group_match",
+  {
+    id: serial("id").primaryKey(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+    groupId: integer("group_id")
+      .notNull()
+      .references(() => swapGroup.id, { onDelete: "cascade" }),
+    senderId: text("sender_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    recipientId: text("recipient_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+  },
+  (table) => [
+    uniqueIndex("unique_sender_per_group").on(table.groupId, table.senderId),
+    uniqueIndex("unique_recipient_per_group").on(table.groupId, table.recipientId),
+    uniqueIndex("unique_pair_per_group").on(table.groupId, table.senderId, table.recipientId),
+  ],
+);
