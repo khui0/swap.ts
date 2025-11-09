@@ -13,9 +13,11 @@
   import TablerUsers from "~icons/tabler/users";
   import type { PageProps } from "./$types";
   import JoinGroupModal from "$lib/components/group/join-group-modal.svelte";
+  import dayjs from "dayjs";
+  import relativeTime from "dayjs/plugin/relativeTime";
+  dayjs.extend(relativeTime);
 
   let { data }: PageProps = $props();
-  console.log(data.groups);
 
   const session = authClient.useSession();
 
@@ -72,8 +74,7 @@
               <p
                 class="-mx-1 inline-flex items-center gap-1 rounded-field bg-base-300 px-2 text-sm font-medium"
               >
-                {group.memberCount}
-                <span class="text-xs"><TablerUsers /></span>
+                Updated {dayjs(group.updatedAt).from(dayjs())}
               </p>
             </div>
             <div class="flex items-end justify-between text-base-content/80">

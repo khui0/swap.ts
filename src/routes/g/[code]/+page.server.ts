@@ -1,25 +1,44 @@
 import { db } from "$lib/server/db/index.js";
-import { swapGroup, user } from "$lib/server/db/schema.js";
-import { and, eq } from "drizzle-orm";
+import { swapGroup, swapGroupMember, user } from "$lib/server/db/schema.js";
+import { error } from "@sveltejs/kit";
+import { and, eq, or } from "drizzle-orm";
 
 export async function load({ locals, params }) {
   if (locals.user && locals.session) {
-    const group = await db
-      .select({
-        createdAt: swapGroup.createdAt,
-        updatedAt: swapGroup.updatedAt,
-        name: swapGroup.name,
-        description: swapGroup.description,
-        code: swapGroup.code,
-        closed: swapGroup.closed,
-        owner: user.name,
-      })
-      .from(swapGroup)
-      .leftJoin(user, eq(swapGroup.ownerId, user.id))
-      .where(and(eq(swapGroup.code, params.code), eq(swapGroup.ownerId, locals.user.id)));
+    const group = (
+      await db
+        .select({
+          createdAt: swapGroup.createdAt,
+          updatedAt: swapGroup.updatedAt,
+          name: swapGroup.name,
+          description: swapGroup.description,
+          code: swapGroup.code,
+          closed: swapGroup.closed,
+          owner: {
+            name: user.name,
+            id: user.id,
+          },
+        })
+        .from(swapGroup)
+        .leftJoin(swapGroupMember, eq(swapGroupMember.groupId, swapGroup.id))
+        .leftJoin(user, eq(swapGroup.ownerId, user.id))
+        .where(
+          and(
+            eq(swapGroup.code, params.code),
+            or(eq(swapGroup.ownerId, locals.user.id), eq(swapGroupMember.userId, locals.user.id)),
+          ),
+        )
+    )[0];
+
+    if (!group) {
+      return error(403, "Unauthorized");
+    }
 
     return {
       group,
+      isOwner: group.owner?.id === locals.user.id,
     };
+  } else {
+    return error(403, "Unauthorized");
   }
 }

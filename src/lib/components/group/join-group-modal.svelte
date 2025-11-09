@@ -28,8 +28,9 @@
   async function joinGroup(e: Event) {
     e.preventDefault();
 
-    const pattern = /[A-Za-z0-9]{7}/;
-    const code = groupLink.match(pattern)?.[0];
+    const pattern = /.*\/g\/([A-Za-z0-9]{7})/;
+
+    const code = groupLink.match(pattern)?.[1] || groupLink;
 
     const response = await fetch(`/api/group/${code}/join`, {
       method: "POST",
@@ -52,7 +53,7 @@
   <input
     type="text"
     class="input w-full"
-    placeholder="{page.url.origin}/ABC123 or ABC123"
+    placeholder="{page.url.origin}/g/ABC123 or ABC123"
     bind:value={groupLink}
   />
   {#if formState !== FormState.Idle}

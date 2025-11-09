@@ -38,7 +38,6 @@
     if (response.ok) {
       formState = FormState.Success;
       const result = await response.json();
-      console.log(result.code);
 
       modal.close();
       groupName = "";
