@@ -3,9 +3,22 @@
   import TablerTrash from "~icons/tabler/trash";
   import TablerPencil from "~icons/tabler/pencil";
   import TablerLock from "~icons/tabler/lock";
+  import Confirm from "$lib/components/modal/confirm.svelte";
+  import { goto } from "$app/navigation";
 
   let { data }: PageProps = $props();
-  console.log(data);
+
+  let deleteGroupConfirm = <Confirm>$state();
+
+  async function deleteGroup() {
+    const response = await fetch(`/api/group/${data.group.code}`, {
+      method: "DELETE",
+    });
+
+    if (response.ok) {
+      goto("/");
+    }
+  }
 </script>
 
 <div class="flex w-full max-w-xl flex-col gap-2 p-4">
@@ -23,7 +36,9 @@
       <button class="btn">Add My Message</button>
       {#if data.isOwner}
         <button aria-label="Edit group" class="btn btn-circle"><TablerPencil /></button>
-        <button aria-label="Delete group" class="btn btn-circle"><TablerTrash /></button>
+        <button aria-label="Delete group" class="btn btn-circle" onclick={deleteGroupConfirm.prompt}
+          ><TablerTrash /></button
+        >
       {:else}
         <button class="btn">Leave Group</button>
       {/if}
@@ -57,3 +72,12 @@
     {/each}
   </ul>
 </div>
+
+<Confirm
+  bind:this={deleteGroupConfirm}
+  title="Delete this group?"
+  body="This action is irreversible."
+  action="Delete"
+  destructive
+  onaccept={deleteGroup}
+/>

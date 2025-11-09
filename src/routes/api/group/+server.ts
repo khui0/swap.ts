@@ -43,59 +43,6 @@ export async function POST({ request, locals }) {
   return json({ code }, { status: 201 });
 }
 
-// Update group info
-// export async function PATCH({ request, locals }) {
-//   if (!locals.session) {
-//     return error(401);
-//   }
-
-//   if (!locals.user) {
-//     return error(500);
-//   }
-
-//   const body = await request.json();
-
-//   if (!body.id) {
-//     return error(400, "Invalid task");
-//   }
-
-//   await db
-//     .update(task)
-//     .set({
-//       completed: body.completed,
-//     })
-//     .where(eq(task.id, body.id));
-
-//   const userTaskList = await db
-//     .select()
-//     .from(task)
-//     .leftJoin(user, eq(task.userId, locals.user.id))
-//     .orderBy(asc(task.createdAt));
-
-//   return json({ tasks: JSON.stringify(userTaskList) }, { status: 201 });
-// }
-
-// // Delete group
-// export async function DELETE({ locals }) {
-//   if (!locals.session) {
-//     return error(401);
-//   }
-
-//   if (!locals.user) {
-//     return error(500);
-//   }
-
-//   await db.delete(task).where(eq(task.completed, true));
-
-//   const userTaskList = await db
-//     .select()
-//     .from(task)
-//     .leftJoin(user, eq(task.userId, locals.user.id))
-//     .orderBy(asc(task.createdAt));
-
-//   return json({ tasks: JSON.stringify(userTaskList) }, { status: 201 });
-// }
-
 // Source - https://stackoverflow.com/a/1349426
 // Posted by csharptest.net, modified by community. See post 'Timeline' for change history
 // Retrieved 2025-11-09, License - CC BY-SA 4.0
