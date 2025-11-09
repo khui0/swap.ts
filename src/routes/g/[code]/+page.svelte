@@ -76,7 +76,7 @@
 <Confirm
   bind:this={deleteGroupConfirm}
   title="Delete this group?"
-  body="This action is irreversible."
+  body="This action is irreversible. All members will be removed from the group."
   action="Delete"
   destructive
   onaccept={deleteGroup}
