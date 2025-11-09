@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { APP_NAME } from "$lib/meta";
   import "../app.css";
   import "@fontsource-variable/figtree";
 
@@ -6,7 +7,7 @@
 </script>
 
 <svelte:head>
-  <title>swap.ts</title>
+  <title>{APP_NAME}</title>
 </svelte:head>
 
 <div class="flex min-h-full flex-col items-center justify-center">

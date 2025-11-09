@@ -6,6 +6,7 @@
   import TablerCircleCheckFilled from "~icons/tabler/circle-check-filled";
   import { page } from "$app/state";
   import { goto } from "$app/navigation";
+  import { APP_NAME } from "$lib/meta";
 
   const FormState = {
     Idle: 0,
@@ -59,7 +60,7 @@
 </script>
 
 <span class="m-0 text-4xl"><TablerLogin2 /></span>
-<h1 class="mb-2 text-2xl font-semibold">Sign in to swap.ts</h1>
+<h1 class="mb-2 text-2xl font-semibold">Sign in to {APP_NAME}</h1>
 <input
   type="email"
   name="email"

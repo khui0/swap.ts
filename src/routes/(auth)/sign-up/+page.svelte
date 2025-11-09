@@ -4,6 +4,7 @@
   import TablerUserPlus from "~icons/tabler/user-plus";
   import TablerCircleCheckFilled from "~icons/tabler/circle-check-filled";
   import { goto } from "$app/navigation";
+    import { APP_NAME } from "$lib/meta";
 
   const FormState = {
     Idle: 0,
@@ -48,7 +49,7 @@
 </script>
 
 <span class="m-0 text-4xl"><TablerUserPlus /></span>
-<h1 class="mb-2 text-2xl font-semibold">Create an account</h1>
+<h1 class="mb-2 text-2xl font-semibold">Create a {APP_NAME} account</h1>
 <input type="text" placeholder="Display Name" class="input w-full" bind:value={name} />
 <input
   type="email"

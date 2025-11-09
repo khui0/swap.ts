@@ -1,14 +1,15 @@
 <script lang="ts">
-  import { authClient } from "$lib/auth-client";
-  import type { PageProps } from "./$types";
-  import TablerPencil from "~icons/tabler/pencil";
-  import TablerLogout from "~icons/tabler/logout";
-  import TablerPlus from "~icons/tabler/plus";
-  import Modal from "$lib/components/modal/modal.svelte";
   import { page } from "$app/state";
-  import Confirm from "$lib/components/modal/confirm.svelte";
-  import ChangePassword from "$lib/components/auth/change-password.svelte";
+  import { authClient } from "$lib/auth-client";
   import ChangeEmail from "$lib/components/auth/change-email.svelte";
+  import ChangePassword from "$lib/components/auth/change-password.svelte";
+  import Confirm from "$lib/components/modal/confirm.svelte";
+  import Modal from "$lib/components/modal/modal.svelte";
+  import { APP_NAME } from "$lib/meta";
+  import TablerLogout from "~icons/tabler/logout";
+  import TablerPencil from "~icons/tabler/pencil";
+  import TablerPlus from "~icons/tabler/plus";
+  import type { PageProps } from "./$types";
 
   let { data }: PageProps = $props();
 
@@ -22,7 +23,7 @@
 
 <div class="m-4 flex w-full max-w-xl flex-col gap-2">
   <div class="flex flex-wrap items-center justify-between gap-2">
-    <h1 class="mb-1 text-4xl">swap.ts</h1>
+    <h1 class="mb-1 text-4xl">{APP_NAME}</h1>
     <div class="flex items-center gap-2">
       {#if $session.data !== null}
         <button
