@@ -2,17 +2,16 @@
   import { authClient } from "$lib/auth-client";
   import ChangeEmail from "$lib/components/auth/change-email.svelte";
   import ChangePassword from "$lib/components/auth/change-password.svelte";
+  import CreateGroupModal from "$lib/components/group/create-group-modal.svelte";
   import Confirm from "$lib/components/modal/confirm.svelte";
   import Modal from "$lib/components/modal/modal.svelte";
   import { APP_NAME } from "$lib/meta";
+  import TablerLock from "~icons/tabler/lock";
   import TablerLogout from "~icons/tabler/logout";
   import TablerPencil from "~icons/tabler/pencil";
   import TablerPlus from "~icons/tabler/plus";
-  import type { PageProps } from "./$types";
-  import CreateGroupModal from "$lib/components/group/create-group-modal.svelte";
-  import TablerLock from "~icons/tabler/lock";
   import TablerUsers from "~icons/tabler/users";
-  import dayjs from "dayjs";
+  import type { PageProps } from "./$types";
 
   let { data }: PageProps = $props();
   console.log(data.groups);
