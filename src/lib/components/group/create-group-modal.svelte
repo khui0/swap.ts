@@ -1,8 +1,8 @@
 <script lang="ts">
-  import Modal from "$lib/components/modal/modal.svelte";
-  import TablerExclamationCircleFilled from "~icons/tabler/exclamation-circle-filled";
-  import TablerCircleCheckFilled from "~icons/tabler/circle-check-filled";
   import { invalidateAll } from "$app/navigation";
+  import Modal from "$lib/components/modal/modal.svelte";
+  import TablerCircleCheckFilled from "~icons/tabler/circle-check-filled";
+  import TablerExclamationCircleFilled from "~icons/tabler/exclamation-circle-filled";
 
   const FormState = {
     Idle: 0,
