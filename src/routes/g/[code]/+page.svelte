@@ -19,7 +19,7 @@
       </div>
       <p>{data.group.description}</p>
     </div>
-    <div class="flex gap-2">
+    <div class="flex shrink-0 gap-2">
       <button class="btn">Add My Message</button>
       {#if data.isOwner}
         <button aria-label="Edit group" class="btn btn-circle"><TablerPencil /></button>
@@ -35,21 +35,23 @@
         <button class="btn">Generate Matches</button>
       </div>
     {/if}
-    {#if !data.group.closed}
-      <div class="flex h-20 items-center justify-center container-dotted p-4">
+    <div class="flex h-20 items-center justify-center container-dotted p-4">
+      {#if !data.group.closed}
         <p class="text-sm font-medium text-base-content/50">
           Matches haven't been picked yet! We'll send you an email when you receive your match.
         </p>
-      </div>
-    {/if}
+      {:else}
+        <button class="btn">View Your Match</button>
+      {/if}
+    </div>
     {#each data.members as member}
       <div class="flex h-20 justify-between rounded-field bg-base-200 px-4 py-3">
         <div class="flex flex-col justify-between">
           <h2 class="text-2xl text-base-content">{member.name}</h2>
           <p class="text-sm text-base-content/80">{member.message || "No message"}</p>
         </div>
-        <div class="flex gap-2 justify-between">
-          
+        <div class="flex items-center justify-between gap-2">
+          <button class="btn">Edit Restrictions</button>
         </div>
       </div>
     {/each}

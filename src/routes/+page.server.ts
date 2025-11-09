@@ -5,7 +5,7 @@ import { desc, eq, or } from "drizzle-orm";
 export async function load({ locals }) {
   if (locals.user && locals.session) {
     const userGroups = await db
-      .select({
+      .selectDistinct({
         createdAt: swapGroup.createdAt,
         updatedAt: swapGroup.updatedAt,
         name: swapGroup.name,

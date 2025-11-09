@@ -9,7 +9,7 @@ export async function POST({ request, locals }) {
     return error(401, "Unauthorized");
   }
 
-  if ((await userGroupOwnedCount(locals.user.id)) > 5) {
+  if ((await userGroupOwnedCount(locals.user.id)) >= 5) {
     return error(403, "Maximum number of groups exceeded (5)");
   }
 
