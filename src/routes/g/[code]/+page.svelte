@@ -5,9 +5,12 @@
   import TablerLock from "~icons/tabler/lock";
   import Confirm from "$lib/components/modal/confirm.svelte";
   import { goto } from "$app/navigation";
+  import Modal from "$lib/components/modal/modal.svelte";
 
   let { data }: PageProps = $props();
 
+  let addMyMessageModal = <Modal>$state();
+  let editGroupModal = <Modal>$state();
   let deleteGroupConfirm = <Confirm>$state();
 
   async function deleteGroup() {
@@ -33,9 +36,11 @@
       <p>{data.group.description}</p>
     </div>
     <div class="flex shrink-0 gap-2">
-      <button class="btn">Add My Message</button>
+      <button class="btn" onclick={addMyMessageModal.show}>Add My Message</button>
       {#if data.isOwner}
-        <button aria-label="Edit group" class="btn btn-circle"><TablerPencil /></button>
+        <button aria-label="Edit group" class="btn btn-circle" onclick={editGroupModal.show}
+          ><TablerPencil /></button
+        >
         <button aria-label="Delete group" class="btn btn-circle" onclick={deleteGroupConfirm.prompt}
           ><TablerTrash /></button
         >
@@ -72,6 +77,18 @@
     {/each}
   </ul>
 </div>
+
+<Modal title="Message" bind:this={addMyMessageModal}>
+  <input type="text" class="input w-full" placeholder="Leave a message for everyone else to see" />
+  <p class="text-end text-xs font-semibold text-base-content/50">0/150</p>
+  <button class="btn">Save</button>
+</Modal>
+
+<Modal title="Edit Group" bind:this={editGroupModal}>
+  <input type="text" class="input w-full" placeholder="Title" />
+  <input type="text" class="input w-full" placeholder="Description" />
+  <button class="btn">Save</button>
+</Modal>
 
 <Confirm
   bind:this={deleteGroupConfirm}
