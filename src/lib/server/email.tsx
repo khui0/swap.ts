@@ -1,5 +1,6 @@
 import ResetPassword from "$lib/email//templates/reset-password";
 import VerifyEmail from "$lib/email/templates/verify-email";
+import ChangeEmail from "$lib/email/templates/change-email";
 import { render } from "@react-email/render";
 import nodemailer from "nodemailer";
 
@@ -43,6 +44,22 @@ export async function sendResetPassword(to: string, name: string, url: string) {
     from: SMTP_FROM,
     to,
     subject: "Reset your password",
+    html,
+  });
+}
+
+export async function sendChangeEmail(to: string, name: string, newEmail: string, url: string) {
+  if (!SMTP_FROM) {
+    console.error("SMTP_FROM is undefined");
+    return;
+  }
+
+  const html = await render(<ChangeEmail name={name} newEmail={newEmail} url={url} />);
+
+  transporter.sendMail({
+    from: SMTP_FROM,
+    to,
+    subject: "Approve email address change",
     html,
   });
 }

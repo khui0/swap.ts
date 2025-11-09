@@ -8,6 +8,7 @@
   import { page } from "$app/state";
   import Confirm from "$lib/components/modal/confirm.svelte";
   import ChangePassword from "$lib/components/auth/change-password.svelte";
+  import ChangeEmail from "$lib/components/auth/change-email.svelte";
 
   let { data }: PageProps = $props();
 
@@ -75,6 +76,10 @@
 </div>
 
 <Modal title={$session.data?.user.name || "Account"} bind:this={accountModal}>
+  <div class="flex flex-col gap-2 container-dotted p-4">
+    <h2 class="leading-none">Change Email</h2>
+    <ChangeEmail />
+  </div>
   <div class="flex flex-col gap-2 container-dotted p-4">
     <h2 class="leading-none">Change Password</h2>
     <ChangePassword />

@@ -11,7 +11,15 @@ import {
   Text,
 } from "@react-email/components";
 
-export default function VerifyEmail({ name, url }: { name: string; url: string }) {
+export default function VerifyEmail({
+  name,
+  newEmail,
+  url,
+}: {
+  name: string;
+  newEmail: string;
+  url: string;
+}) {
   return (
     <Html>
       <Head>
@@ -20,20 +28,24 @@ export default function VerifyEmail({ name, url }: { name: string; url: string }
       </Head>
       <Tailwind config={{}}>
         <Body className="bg-[#f5f5f5] p-4">
-          <Preview>Verify your email address</Preview>
+          <Preview>Approve email address change</Preview>
           <Container className="rounded-xl bg-white px-4">
             <Section>
               <Text>Hi {name},</Text>
               <Text>
-                Thank you for signing up. Click the button below to verify your email address:
+                Someone has requested to change the email on your account to {newEmail}. If this was
+                you, click the button below to confirm the change:
               </Text>
               <Button className="rounded-lg bg-black px-4 py-3 font-semibold text-white" href={url}>
-                Verify Email
+                Change Email
               </Button>
               <Text>
                 If the button above doesn't work, copy and paste this link into your browser:
               </Text>
               <Link href={url}>{url}</Link>
+              <Text>
+                If you didn't request an email change, sign in and change your password immediately.
+              </Text>
             </Section>
           </Container>
         </Body>
