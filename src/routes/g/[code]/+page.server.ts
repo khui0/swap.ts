@@ -34,7 +34,7 @@ export async function load({ locals, params }) {
     if (!group) {
       return error(403, "Unauthorized");
     }
-
+    
     const members = await db
       .select({
         id: user.id,

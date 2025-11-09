@@ -1,7 +1,7 @@
 import { db } from "$lib/server/db/index";
 import { swapGroup, swapGroupMember } from "$lib/server/db/schema.js";
 import { error, json } from "@sveltejs/kit";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 // Update message
 export async function PATCH({ request, locals, params }) {
@@ -39,7 +39,9 @@ export async function PATCH({ request, locals, params }) {
         message: body.message,
         hiddenMessage: body.hidden,
       })
-      .where(eq(swapGroupMember.userId, locals.user.id));
+      .where(
+        and(eq(swapGroupMember.groupId, group.groupId), eq(swapGroupMember.userId, locals.user.id)),
+      );
     return json({}, { status: 201 });
   } catch {
     return error(500);
