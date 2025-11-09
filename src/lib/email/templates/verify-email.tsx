@@ -1,3 +1,4 @@
+import { APP_NAME } from "$lib/meta";
 import {
   Body,
   Button,
@@ -25,7 +26,8 @@ export default function VerifyEmail({ name, url }: { name: string; url: string }
             <Section>
               <Text>Hi {name},</Text>
               <Text>
-                Thank you for signing up. Click the button below to verify your email address:
+                Thank you for signing up for {APP_NAME}. Click the button below to verify your email
+                address:
               </Text>
               <Button className="rounded-lg bg-black px-4 py-3 font-semibold text-white" href={url}>
                 Verify Email
