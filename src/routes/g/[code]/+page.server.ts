@@ -1,7 +1,7 @@
 import { db } from "$lib/server/db/index.js";
 import { swapGroup, swapGroupMember, user } from "$lib/server/db/schema.js";
 import { error } from "@sveltejs/kit";
-import { and, eq, or } from "drizzle-orm";
+import { and, asc, eq, or } from "drizzle-orm";
 
 export async function load({ locals, params }) {
   if (locals.user && locals.session) {
@@ -44,7 +44,8 @@ export async function load({ locals, params }) {
       })
       .from(swapGroupMember)
       .leftJoin(user, eq(swapGroupMember.userId, user.id))
-      .where(eq(swapGroupMember.groupId, group.id));
+      .where(eq(swapGroupMember.groupId, group.id))
+      .orderBy(asc(user.name));
 
     const self = (
       await db

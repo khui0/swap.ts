@@ -14,6 +14,7 @@
   import TablerPencil from "~icons/tabler/pencil";
   import TablerPlus from "~icons/tabler/plus";
   import type { PageProps } from "./$types";
+  import ChangeUsername from "$lib/components/auth/change-username.svelte";
   dayjs.extend(relativeTime);
 
   let { data }: PageProps = $props();
@@ -78,7 +79,7 @@
                 Updated {dayjs(group.updatedAt).from(dayjs())}
               </p>
             </div>
-            <div class="grid grid-cols-[1fr_auto] text-base-content/80 gap-2">
+            <div class="grid grid-cols-[1fr_auto] gap-2 text-base-content/80">
               <p class="overflow-hidden text-sm text-ellipsis whitespace-nowrap">
                 {group.description}
               </p>
@@ -106,9 +107,15 @@
 </div>
 
 <Modal title={$session.data?.user.name || "Account"} bind:this={accountModal}>
-  <div class="flex flex-col gap-2 container-dotted p-4">
-    <h2 class="leading-none">Change Email</h2>
-    <ChangeEmail />
+  <div class="grid grid-cols-2 gap-2">
+    <div class="flex flex-col gap-2 container-dotted p-4">
+      <h2 class="leading-none">Change Display Name</h2>
+      <ChangeUsername />
+    </div>
+    <div class="flex flex-col gap-2 container-dotted p-4">
+      <h2 class="leading-none">Change Email</h2>
+      <ChangeEmail />
+    </div>
   </div>
   <div class="flex flex-col gap-2 container-dotted p-4">
     <h2 class="leading-none">Change Password</h2>
