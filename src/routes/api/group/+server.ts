@@ -19,6 +19,14 @@ export async function POST({ request, locals }) {
     return error(400, "Missing parameters");
   }
 
+  if (body.name.length > 100) {
+    return error(400, "Group name cannot exceed 100 characters");
+  }
+
+  if (body.description.length > 250) {
+    return error(400, "Group description cannot exceed 250 characters");
+  }
+
   const code = generateCode(7);
 
   const row = await db
