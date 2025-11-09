@@ -8,6 +8,7 @@ export async function load({ locals, params }) {
     const group = (
       await db
         .select({
+          id: swapGroup.id,
           createdAt: swapGroup.createdAt,
           updatedAt: swapGroup.updatedAt,
           name: swapGroup.name,
@@ -34,8 +35,19 @@ export async function load({ locals, params }) {
       return error(403, "Unauthorized");
     }
 
+    const members = await db
+      .select({
+        id: user.id,
+        name: user.name,
+        message: swapGroupMember.message,
+      })
+      .from(swapGroupMember)
+      .leftJoin(user, eq(swapGroupMember.userId, user.id))
+      .where(eq(swapGroupMember.groupId, group.id));
+
     return {
       group,
+      members,
       isOwner: group.owner?.id === locals.user.id,
     };
   } else {

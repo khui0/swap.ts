@@ -3,18 +3,17 @@
   import ChangeEmail from "$lib/components/auth/change-email.svelte";
   import ChangePassword from "$lib/components/auth/change-password.svelte";
   import CreateGroupModal from "$lib/components/group/create-group-modal.svelte";
+  import JoinGroupModal from "$lib/components/group/join-group-modal.svelte";
   import Confirm from "$lib/components/modal/confirm.svelte";
   import Modal from "$lib/components/modal/modal.svelte";
   import { APP_NAME } from "$lib/meta";
+  import dayjs from "dayjs";
+  import relativeTime from "dayjs/plugin/relativeTime";
   import TablerLock from "~icons/tabler/lock";
   import TablerLogout from "~icons/tabler/logout";
   import TablerPencil from "~icons/tabler/pencil";
   import TablerPlus from "~icons/tabler/plus";
-  import TablerUsers from "~icons/tabler/users";
   import type { PageProps } from "./$types";
-  import JoinGroupModal from "$lib/components/group/join-group-modal.svelte";
-  import dayjs from "dayjs";
-  import relativeTime from "dayjs/plugin/relativeTime";
   dayjs.extend(relativeTime);
 
   let { data }: PageProps = $props();
@@ -71,9 +70,7 @@
                   <span class="text-xl"><TablerLock /></span>
                 {/if}
               </div>
-              <p
-                class="-mx-1 inline-flex items-center gap-1 rounded-field bg-base-300 px-2 text-sm font-medium"
-              >
+              <p class="container-badge">
                 Updated {dayjs(group.updatedAt).from(dayjs())}
               </p>
             </div>
@@ -84,7 +81,7 @@
           </a>
         {/each}
       {:else}
-        <div class="flex h-20 items-center justify-center container-dotted">
+        <div class="flex h-20 items-center justify-center container-dotted p-4">
           <p class="text-sm font-medium text-base-content/50">You aren't in any groups</p>
         </div>
       {/if}
