@@ -84,10 +84,10 @@
       {/if}
     </div>
     {#each data.members as member}
-      <div class="flex h-20 justify-between rounded-field bg-base-200 px-4 py-3">
-        <div class="flex flex-col justify-between">
+      <div class="grid h-20 grid-cols-[1fr_auto] gap-2 rounded-field bg-base-200 px-4 py-3">
+        <div class="flex flex-col justify-between overflow-hidden">
           <h2 class="text-2xl text-base-content">{member.name}</h2>
-          <p class="text-sm text-base-content/80">
+          <p class="overflow-hidden text-sm text-ellipsis whitespace-nowrap text-base-content/80">
             {#if member.id === $session.data?.user.id}
               {data.self.message || "No message"}{data.self.hiddenMessage ? " (Hidden)" : ""}
             {:else}
