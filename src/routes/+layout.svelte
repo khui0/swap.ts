@@ -9,12 +9,6 @@
   <title>swap.ts</title>
 </svelte:head>
 
-<div class="flex h-full flex-col">
+<div class="flex min-h-full flex-col items-center justify-center">
   {@render children()}
 </div>
-
-<style>
-  :global(html, body) {
-    height: 100%;
-  }
-</style>
