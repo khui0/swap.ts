@@ -2,6 +2,7 @@
   import Modal from "$lib/components/modal/modal.svelte";
   import TablerExclamationCircleFilled from "~icons/tabler/exclamation-circle-filled";
   import TablerCircleCheckFilled from "~icons/tabler/circle-check-filled";
+  import { invalidateAll } from "$app/navigation";
 
   const FormState = {
     Idle: 0,
@@ -41,6 +42,7 @@
 
       modal.close();
       groupName = "";
+      invalidateAll();
     } else {
       formState = FormState.Error;
       errorMessage = (await response.json()).message;
