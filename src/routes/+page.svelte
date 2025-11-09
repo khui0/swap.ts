@@ -90,8 +90,10 @@
       class="btn btn-error"
       onclick={() => {
         deleteAccountConfirm.prompt();
-      }}>Delete Account</button
+      }}
     >
+      Delete Account
+    </button>
   </div>
   <button
     aria-label="Sign out"
@@ -123,10 +125,12 @@
 <Confirm
   bind:this={deleteAccountConfirm}
   title="Delete Account?"
-  body="This action is irreversible. Deleting your account will remove you from any groups you are a part of and will delete any groups you have created."
-  action="Delete"
+  body="This action is irreversible. Deleting your account will remove you from any groups you are a part of and will delete any groups you have created. If you choose to do so, you will receive a confirmation email."
+  action="Send Confirmation"
   destructive
-  onaccept={() => {
-    // Delete Account
+  onaccept={async () => {
+    await authClient.deleteUser({
+      callbackURL: "/goodbye",
+    });
   }}
 />

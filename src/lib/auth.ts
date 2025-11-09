@@ -1,7 +1,12 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "$lib/server/db";
-import { sendChangeEmail, sendResetPassword, sendVerifyEmail } from "./server/email";
+import {
+  sendChangeEmail,
+  sendDeleteAccount,
+  sendResetPassword,
+  sendVerifyEmail,
+} from "./server/email";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -12,6 +17,12 @@ export const auth = betterAuth({
       enabled: true,
       sendChangeEmailVerification: async ({ user, newEmail, url }) => {
         await sendChangeEmail(user.email, user.name, newEmail, url);
+      },
+    },
+    deleteUser: {
+      enabled: true,
+      sendDeleteAccountVerification: async ({ user, url }) => {
+        await sendDeleteAccount(user.email, user.name, url);
       },
     },
   },

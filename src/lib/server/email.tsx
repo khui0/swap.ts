@@ -1,6 +1,7 @@
 import ResetPassword from "$lib/email//templates/reset-password";
 import VerifyEmail from "$lib/email/templates/verify-email";
 import ChangeEmail from "$lib/email/templates/change-email";
+import DeleteAccount from "$lib/email/templates/delete-account";
 import { render } from "@react-email/render";
 import nodemailer from "nodemailer";
 
@@ -60,6 +61,22 @@ export async function sendChangeEmail(to: string, name: string, newEmail: string
     from: SMTP_FROM,
     to,
     subject: "Approve email address change",
+    html,
+  });
+}
+
+export async function sendDeleteAccount(to: string, name: string, url: string) {
+  if (!SMTP_FROM) {
+    console.error("SMTP_FROM is undefined");
+    return;
+  }
+
+  const html = await render(<DeleteAccount name={name} url={url} />);
+
+  transporter.sendMail({
+    from: SMTP_FROM,
+    to,
+    subject: "Confirm account deletion",
     html,
   });
 }
