@@ -6,11 +6,12 @@
   import Confirm from "$lib/components/modal/confirm.svelte";
   import { goto } from "$app/navigation";
   import Modal from "$lib/components/modal/modal.svelte";
+  import EditGroupModal from "$lib/components/group/edit-group-modal.svelte";
 
   let { data }: PageProps = $props();
 
   let addMyMessageModal = <Modal>$state();
-  let editGroupModal = <Modal>$state();
+  let editGroupModal = <EditGroupModal>$state();
   let deleteGroupConfirm = <Confirm>$state();
 
   async function deleteGroup() {
@@ -28,22 +29,32 @@
   <div class="flex justify-between">
     <div class="flex flex-col">
       <div class="flex items-center gap-2">
-        <h1>{data.group.name}</h1>
+        <h1>{data.group.name.substring(0, 100)}</h1>
         {#if data.group.closed}
           <span class="text-xl"><TablerLock /></span>
         {/if}
       </div>
-      <p>{data.group.description}</p>
+      <p>{data.group.description.substring(0, 250)}</p>
     </div>
     <div class="flex shrink-0 gap-2">
       <button class="btn" onclick={addMyMessageModal.show}>Add My Message</button>
       {#if data.isOwner}
-        <button aria-label="Edit group" class="btn btn-circle" onclick={editGroupModal.show}
-          ><TablerPencil /></button
+        <button
+          aria-label="Edit group"
+          class="btn btn-circle"
+          onclick={() => {
+            editGroupModal.show(data.group.name, data.group.description);
+          }}
         >
-        <button aria-label="Delete group" class="btn btn-circle" onclick={deleteGroupConfirm.prompt}
-          ><TablerTrash /></button
+          <TablerPencil />
+        </button>
+        <button
+          aria-label="Delete group"
+          class="btn btn-circle"
+          onclick={deleteGroupConfirm.prompt}
         >
+          <TablerTrash />
+        </button>
       {:else}
         <button class="btn">Leave Group</button>
       {/if}
@@ -84,11 +95,7 @@
   <button class="btn">Save</button>
 </Modal>
 
-<Modal title="Edit Group" bind:this={editGroupModal}>
-  <input type="text" class="input w-full" placeholder="Title" />
-  <input type="text" class="input w-full" placeholder="Description" />
-  <button class="btn">Save</button>
-</Modal>
+<EditGroupModal code={data.group.code} bind:this={editGroupModal} />
 
 <Confirm
   bind:this={deleteGroupConfirm}

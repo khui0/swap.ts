@@ -30,6 +30,14 @@ export async function PATCH({ request, locals, params }) {
     return error(400, "Invalid parameters");
   }
 
+  if (body.name.length > 100) {
+    return error(400, "Group name cannot exceed 100 characters");
+  }
+
+  if (body.description.length > 250) {
+    return error(400, "Group description cannot exceed 250 characters");
+  }
+
   try {
     await db
       .update(swapGroup)
@@ -37,7 +45,7 @@ export async function PATCH({ request, locals, params }) {
         name: body.name,
         description: body.description,
       })
-      .where(eq(swapGroup.code, body.id));
+      .where(eq(swapGroup.code, code));
     return json({}, { status: 201 });
   } catch {
     return error(500);
