@@ -112,11 +112,11 @@
   <div class="grid grid-cols-2 gap-2">
     <div class="flex flex-col gap-2 container-dotted p-4">
       <h2 class="leading-none">Change Display Name</h2>
-      <ChangeUsername current={$session.data?.user.name || ""} />
+      <ChangeUsername />
     </div>
     <div class="flex flex-col gap-2 container-dotted p-4">
       <h2 class="leading-none">Change Email</h2>
-      <ChangeEmail current={$session.data?.user.email || ""} />
+      <ChangeEmail />
     </div>
   </div>
   <div class="flex flex-col gap-2 container-dotted p-4">

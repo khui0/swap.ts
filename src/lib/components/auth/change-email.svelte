@@ -11,13 +11,18 @@
 
   type FormState = (typeof FormState)[keyof typeof FormState];
 
-  let { current }: { current: string } = $props();
+  const session = authClient.useSession();
 
   let formState = $state(FormState.Idle);
   let errorMessage = $state("");
   let errorCode = $state("");
 
-  let newEmail = $state(current);
+  let newEmail = $state("");
+
+  session.subscribe((value) => {
+    if (!value.data) return;
+    newEmail = value.data.user.email;
+  });
 
   async function changeEmail() {
     const { error } = await authClient.changeEmail({
