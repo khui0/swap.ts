@@ -13,7 +13,7 @@ export async function POST({ locals, params }) {
 
   const group = (
     await db
-      .select({ groupId: swapGroup.id, ownerId: swapGroup.ownerId })
+      .select({ groupId: swapGroup.id, ownerId: swapGroup.ownerId, closed: swapGroup.closed })
       .from(swapGroup)
       .where(eq(swapGroup.code, code))
   )[0];
@@ -22,6 +22,10 @@ export async function POST({ locals, params }) {
     return error(400, "Group does not exist");
   }
 
+  if (group.closed) {
+    return error(403, "Group is closed");
+  }
+  
   await db
     .insert(swapGroupMember)
     .values({

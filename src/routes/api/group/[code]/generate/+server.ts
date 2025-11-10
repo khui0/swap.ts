@@ -73,6 +73,12 @@ export async function POST({ locals, params }) {
     await db.transaction(async (tx) => {
       await tx.delete(swapGroupMatch).where(eq(swapGroupMatch.groupId, group.groupId));
       await tx.insert(swapGroupMatch).values(values).onConflictDoNothing();
+      await tx
+        .update(swapGroup)
+        .set({
+          closed: true,
+        })
+        .where(eq(swapGroup.id, group.groupId));
     });
     return json({}, { status: 201 });
   } catch {

@@ -70,10 +70,12 @@
     <div class="flex justify-between">
       <div class="flex flex-col">
         <div class="flex items-center gap-2">
-          <h1>{data.joined.group.name.substring(0, 100)}</h1>
-          {#if data.joined.group.closed}
-            <span class="text-xl"><TablerLock /></span>
-          {/if}
+          <h1>
+            {data.joined.group.name.substring(0, 100)}
+            {#if data.joined.group.closed}
+              <span class="inline-flex text-xl"><TablerLock /></span>
+            {/if}
+          </h1>
         </div>
         <p>{data.joined.group.description.substring(0, 250)}</p>
       </div>
@@ -209,18 +211,24 @@
       </div>
     {:else}
       <div class="flex gap-2">
-        <button
-          class="btn btn-primary"
-          onclick={async () => {
-            const response = await fetch(`/api/group/${data.code}/user`, {
-              method: "POST",
-            });
+        {#if !data.closed}
+          <button
+            class="btn btn-primary"
+            onclick={async () => {
+              const response = await fetch(`/api/group/${data.code}/user`, {
+                method: "POST",
+              });
 
-            if (response.ok) {
-              invalidateAll();
-            }
-          }}><TablerPlus />Join Group</button
-        >
+              if (response.ok) {
+                invalidateAll();
+              }
+            }}
+            ><TablerPlus />
+            Join Group
+          </button>
+        {:else}
+          <button class="btn btn-primary" disabled><TablerLock />Group Closed</button>
+        {/if}
         <a href="/" class="btn">{APP_NAME}</a>
       </div>
     {/if}

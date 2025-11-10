@@ -9,6 +9,7 @@ export async function load({ locals, params }) {
         name: swapGroup.name,
         description: swapGroup.description,
         code: swapGroup.code,
+        closed: swapGroup.closed,
       })
       .from(swapGroup)
       .where(eq(swapGroup.code, params.code))
@@ -45,6 +46,7 @@ export async function load({ locals, params }) {
       return {
         name: basic.name,
         code: basic.code,
+        closed: basic.closed,
       };
     }
 
@@ -102,6 +104,7 @@ export async function load({ locals, params }) {
     return {
       name: basic.name,
       code: basic.code,
+      closed: basic.closed,
     };
   }
 }
