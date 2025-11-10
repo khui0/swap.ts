@@ -3,6 +3,7 @@ import { swapGroup, swapGroupMember } from "$lib/server/db/schema.js";
 import { error, json } from "@sveltejs/kit";
 import { and, eq } from "drizzle-orm";
 
+// Join user to group
 export async function POST({ locals, params }) {
   if (!locals.session || !locals.user) {
     return error(401, "Unauthorized");

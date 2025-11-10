@@ -182,6 +182,7 @@
   <EditRestrictionsModal
     code={data.joined.group.code}
     members={data.joined.members}
+    restrictions={new Set()}
     bind:this={editRestrictionsModal}
   />
 {:else}

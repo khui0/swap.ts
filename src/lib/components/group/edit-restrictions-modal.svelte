@@ -9,7 +9,15 @@
     name: string;
   }
 
-  let { code, members }: { code: string; members: User[] } = $props();
+  let {
+    code,
+    members,
+    restrictions = new Set(),
+  }: {
+    code: string;
+    members: User[];
+    restrictions: Set<string>;
+  } = $props();
 
   const FormState = {
     Idle: 0,
@@ -35,29 +43,28 @@
   async function submit(e: Event) {
     e.preventDefault();
 
-    // if (messageValue.length > 250) {
-    //   formState = FormState.Error;
-    //   errorMessage = "Message is too long";
-    //   return;
-    // }
+    if (!currentUser) return;
 
-    // const response = await fetch(`/api/group/${code}/message`, {
-    //   method: "PATCH",
-    //   body: JSON.stringify({
-    //     message: messageValue,
-    //     hidden: hiddenValue,
-    //   }),
-    // });
+    const response = await fetch(`/api/group/${code}/restriction`, {
+      method: "PUT",
+      body: JSON.stringify({
+        senderId: currentUser.id,
+        restrictions: Array.from(restrictions).map((item: string) => {
+          const [senderId, recipientId] = item.split("->");
+          return recipientId;
+        }),
+      }),
+    });
 
-    // if (response.ok) {
-    //   formState = FormState.Success;
+    if (response.ok) {
+      formState = FormState.Success;
 
-    //   modal.close();
-    //   invalidateAll();
-    // } else {
-    //   formState = FormState.Error;
-    //   errorMessage = (await response.json()).message;
-    // }
+      modal.close();
+      invalidateAll();
+    } else {
+      formState = FormState.Error;
+      errorMessage = (await response.json()).message;
+    }
   }
 </script>
 
@@ -70,7 +77,20 @@
       <li>
         <label class="label grid grid-cols-[1fr_auto] gap-2 text-base-content">
           {member.name}
-          <input type="checkbox" checked class="toggle" />
+          <input
+            type="checkbox"
+            class="toggle"
+            checked={!restrictions.has(`${currentUser?.id}->${member.id}`)}
+            onchange={(e) => {
+              const key = `${currentUser?.id}->${member.id}`;
+              const target = e.target as HTMLInputElement;
+              if (target.checked) {
+                restrictions.delete(key);
+              } else {
+                restrictions.add(key);
+              }
+            }}
+          />
         </label>
       </li>
     {/each}

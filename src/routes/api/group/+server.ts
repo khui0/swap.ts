@@ -46,6 +46,7 @@ export async function POST({ request, locals }) {
     groupId,
     userId: locals.user.id,
     message: "",
+    hiddenMessage: false,
   });
 
   return json({ code }, { status: 201 });
