@@ -79,8 +79,6 @@ export async function load({ locals, params }) {
       await db.select().from(swapGroupRestriction).where(eq(swapGroupRestriction.groupId, group.id))
     ).map((item) => `${item.senderId}->${item.recipientId}`);
 
-    console.log(restrictions);
-
     return {
       joined: {
         group,
@@ -91,7 +89,7 @@ export async function load({ locals, params }) {
           message: user.hiddenMessage ? "" : user.message,
           hiddenMessage: user.hiddenMessage,
         })),
-        restrictions: new Set(restrictions),
+        restrictions: group.owner?.id === locals.user.id ? new Set(restrictions) : null,
         isOwner: group.owner?.id === locals.user.id,
       },
     };

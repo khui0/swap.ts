@@ -179,12 +179,14 @@
 
   <EditGroupModal code={data.joined.group.code} bind:this={editGroupModal} />
 
-  <EditRestrictionsModal
-    code={data.joined.group.code}
-    members={data.joined.members}
-    restrictions={data.joined.restrictions}
-    bind:this={editRestrictionsModal}
-  />
+  {#if data.joined.restrictions}
+    <EditRestrictionsModal
+      code={data.joined.group.code}
+      members={data.joined.members}
+      restrictions={data.joined.restrictions}
+      bind:this={editRestrictionsModal}
+    />
+  {/if}
 {:else}
   <div class="flex w-full max-w-xl flex-col gap-2 p-4">
     <h1>Join {data.name}</h1>
