@@ -2,6 +2,7 @@
   import { authClient } from "$lib/auth-client";
   import ChangeEmail from "$lib/components/auth/change-email.svelte";
   import ChangePassword from "$lib/components/auth/change-password.svelte";
+  import ChangeUsername from "$lib/components/auth/change-username.svelte";
   import CreateGroupModal from "$lib/components/group/create-group-modal.svelte";
   import JoinGroupModal from "$lib/components/group/join-group-modal.svelte";
   import Confirm from "$lib/components/modal/confirm.svelte";
@@ -14,7 +15,6 @@
   import TablerPencil from "~icons/tabler/pencil";
   import TablerPlus from "~icons/tabler/plus";
   import type { PageProps } from "./$types";
-  import ChangeUsername from "$lib/components/auth/change-username.svelte";
   dayjs.extend(relativeTime);
 
   let { data }: PageProps = $props();

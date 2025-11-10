@@ -1,17 +1,17 @@
 <script lang="ts">
   import { goto, invalidateAll } from "$app/navigation";
+  import { authClient } from "$lib/auth-client";
   import EditGroupModal from "$lib/components/group/edit-group-modal.svelte";
   import EditMessageModal from "$lib/components/group/edit-message-modal.svelte";
+  import EditRestrictionsModal from "$lib/components/group/edit-restrictions-modal.svelte";
   import Confirm from "$lib/components/modal/confirm.svelte";
+  import { APP_NAME } from "$lib/meta";
   import TablerLock from "~icons/tabler/lock";
   import TablerPencil from "~icons/tabler/pencil";
-  import TablerTrash from "~icons/tabler/trash";
-  import type { PageProps } from "./$types";
-  import { authClient } from "$lib/auth-client";
-  import { APP_NAME } from "$lib/meta";
   import TablerPlus from "~icons/tabler/plus";
-  import EditRestrictionsModal from "$lib/components/group/edit-restrictions-modal.svelte";
+  import TablerTrash from "~icons/tabler/trash";
   import TablerUserX from "~icons/tabler/user-x";
+  import type { PageProps } from "./$types";
 
   let { data }: PageProps = $props();
 

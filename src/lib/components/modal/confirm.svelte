@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { desc } from "drizzle-orm";
   import Modal from "./modal.svelte";
 
   let modal: Modal;

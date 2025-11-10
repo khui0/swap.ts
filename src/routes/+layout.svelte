@@ -1,7 +1,7 @@
 <script lang="ts">
   import { APP_NAME } from "$lib/meta";
-  import "../app.css";
   import "@fontsource-variable/figtree";
+  import "../app.css";
 
   let { children } = $props();
 </script>

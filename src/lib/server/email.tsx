@@ -1,7 +1,7 @@
 import ResetPassword from "$lib/email//templates/reset-password";
-import VerifyEmail from "$lib/email/templates/verify-email";
 import ChangeEmail from "$lib/email/templates/change-email";
 import DeleteAccount from "$lib/email/templates/delete-account";
+import VerifyEmail from "$lib/email/templates/verify-email";
 import { render } from "@react-email/render";
 import nodemailer from "nodemailer";
 

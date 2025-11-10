@@ -1,7 +1,7 @@
 <script lang="ts">
   import { authClient } from "$lib/auth-client";
-  import TablerExclamationCircleFilled from "~icons/tabler/exclamation-circle-filled";
   import TablerCircleCheckFilled from "~icons/tabler/circle-check-filled";
+  import TablerExclamationCircleFilled from "~icons/tabler/exclamation-circle-filled";
 
   const FormState = {
     Idle: 0,
