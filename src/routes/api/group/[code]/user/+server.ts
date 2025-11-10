@@ -78,3 +78,49 @@ export async function PATCH({ request, locals, params }) {
     return error(500);
   }
 }
+
+// Delete user
+export async function DELETE({ request, locals, params }) {
+  if (!locals.session || !locals.user) {
+    return error(401, "Unauthorized");
+  }
+
+  const code = params.code;
+
+  const group = (
+    await db
+      .select({ groupId: swapGroup.id, ownerId: swapGroup.ownerId })
+      .from(swapGroup)
+      .where(eq(swapGroup.code, code))
+  )[0];
+
+  if (!group) {
+    return error(400, "Group does not exist");
+  }
+
+  const body = await request.json();
+
+  if (!body.userId) {
+    return error(400, "No user provided");
+  }
+
+  // Prevent non owner from deleting other users
+  if (group.ownerId !== locals.user.id && body.userId !== locals.user.id) {
+    return error(403, "Unauthorized");
+  }
+
+  if (group.ownerId === locals.user.id && body.userId === locals.user.id) {
+    return error(400, "Cannot delete yourself");
+  }
+
+  try {
+    await db
+      .delete(swapGroupMember)
+      .where(
+        and(eq(swapGroupMember.groupId, group.groupId), eq(swapGroupMember.userId, body.userId)),
+      );
+    return json({}, { status: 201 });
+  } catch {
+    return error(500);
+  }
+}

@@ -84,7 +84,23 @@
             <TablerTrash />
           </button>
         {:else}
-          <button class="btn">Leave Group</button>
+          <button
+            class="btn"
+            onclick={async () => {
+              const response = await fetch(`/api/group/${data.joined.group.code}/user`, {
+                method: "DELETE",
+                body: JSON.stringify({
+                  userId: data.joined.self.id,
+                }),
+              });
+
+              if (response.ok) {
+                invalidateAll();
+              }
+            }}
+          >
+            Leave Group
+          </button>
         {/if}
       </div>
     </div>

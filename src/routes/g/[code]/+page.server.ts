@@ -63,6 +63,7 @@ export async function load({ locals, params }) {
     const self = (
       await db
         .select({
+          id: user.id,
           name: user.name,
           message: swapGroupMember.message,
           hiddenMessage: swapGroupMember.hiddenMessage,
