@@ -32,7 +32,7 @@
 
     const code = groupLink.match(pattern)?.[1] || groupLink;
 
-    const response = await fetch(`/api/group/${code}/join`, {
+    const response = await fetch(`/api/group/${code}/user`, {
       method: "POST",
     });
 

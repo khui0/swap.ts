@@ -38,7 +38,7 @@
       return;
     }
 
-    const response = await fetch(`/api/group/${code}/message`, {
+    const response = await fetch(`/api/group/${code}/user`, {
       method: "PATCH",
       body: JSON.stringify({
         message: messageValue,

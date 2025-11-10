@@ -21,6 +21,7 @@
   let editGroupModal = <EditGroupModal>$state();
   let editRestrictionsModal = <EditRestrictionsModal>$state();
   let deleteGroupConfirm = <Confirm>$state();
+  let deleteUserConfirm = <Confirm>$state();
 
   async function deleteGroup() {
     if (!data.joined) return;
@@ -32,6 +33,14 @@
     if (response.ok) {
       goto("/");
     }
+  }
+
+  async function removeUser(userId: string) {
+    if (!data.joined || !data.joined.isOwner) return;
+
+    const response = await fetch(`/api/group/${data.joined.group.code}/user`, {
+      method: "DELETE",
+    });
   }
 </script>
 
@@ -149,7 +158,7 @@
         <button
           class="btn btn-primary"
           onclick={async () => {
-            const response = await fetch(`/api/group/${data.code}/join`, {
+            const response = await fetch(`/api/group/${data.code}/user`, {
               method: "POST",
             });
 
@@ -167,6 +176,15 @@
 <Confirm
   bind:this={deleteGroupConfirm}
   title="Delete this group?"
+  body="This action is irreversible. All members will be removed from the group."
+  action="Delete"
+  destructive
+  onaccept={deleteGroup}
+/>
+
+<Confirm
+  bind:this={deleteUserConfirm}
+  title="Remove ?"
   body="This action is irreversible. All members will be removed from the group."
   action="Delete"
   destructive
