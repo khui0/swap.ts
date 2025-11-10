@@ -75,9 +75,14 @@ export async function load({ locals, params }) {
         )
     )[0];
 
-    const restrictions = (
-      await db.select().from(swapGroupRestriction).where(eq(swapGroupRestriction.groupId, group.id))
-    ).map((item) => `${item.senderId}->${item.recipientId}`);
+    const restrictions = new Set(
+      (
+        await db
+          .select()
+          .from(swapGroupRestriction)
+          .where(eq(swapGroupRestriction.groupId, group.id))
+      ).map((item) => `${item.senderId}->${item.recipientId}`),
+    );
 
     return {
       joined: {
@@ -89,7 +94,7 @@ export async function load({ locals, params }) {
           message: user.hiddenMessage ? "" : user.message,
           hiddenMessage: user.hiddenMessage,
         })),
-        restrictions: group.owner?.id === locals.user.id ? new Set(restrictions) : null,
+        restrictions: group.owner?.id === locals.user.id ? restrictions : null,
         isOwner: group.owner?.id === locals.user.id,
       },
     };

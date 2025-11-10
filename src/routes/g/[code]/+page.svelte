@@ -51,6 +51,18 @@
       invalidateAll();
     }
   }
+
+  async function generateMatches() {
+    if (!data.joined || !data.joined.isOwner) return;
+
+    const response = await fetch(`/api/group/${data.joined.group.code}/generate`, {
+      method: "POST",
+    });
+
+    if (response.ok) {
+      invalidateAll();
+    }
+  }
 </script>
 
 {#if data.joined}
@@ -116,10 +128,10 @@
     <ul class="flex flex-col gap-2">
       {#if data.joined.isOwner}
         <div class="flex h-20 items-center justify-center container-dotted p-4">
-          <button class="btn">Generate Matches</button>
+          <button class="btn" onclick={generateMatches}>Generate Matches</button>
         </div>
       {/if}
-      <div class="flex h-20 items-center justify-center container-dotted p-4">
+      <div class="flex min-h-20 items-center justify-center container-dotted px-4 py-3">
         {#if !data.joined.group.closed}
           <p class="text-sm font-medium text-base-content/50">
             {#if !data.joined.isOwner}
