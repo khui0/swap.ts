@@ -1,5 +1,11 @@
 import { db } from "$lib/server/db/index.js";
-import { swapGroup, swapGroupMember, swapGroupRestriction, user } from "$lib/server/db/schema.js";
+import {
+  swapGroup,
+  swapGroupMatch,
+  swapGroupMember,
+  swapGroupRestriction,
+  user,
+} from "$lib/server/db/schema.js";
 import { and, asc, eq, or } from "drizzle-orm";
 
 export async function load({ locals, params }) {
@@ -86,6 +92,22 @@ export async function load({ locals, params }) {
       ).map((item) => `${item.senderId}->${item.recipientId}`),
     );
 
+    const match = (
+      await db
+        .select({
+          id: swapGroupMatch.recipientId,
+          name: user.name,
+          message: swapGroupMember.message,
+          hiddenMessage: swapGroupMember.hiddenMessage,
+        })
+        .from(swapGroupMatch)
+        .innerJoin(user, eq(swapGroupMatch.recipientId, user.id))
+        .innerJoin(swapGroupMember, eq(swapGroupMatch.recipientId, swapGroupMember.userId))
+        .where(
+          and(eq(swapGroupMatch.groupId, group.id), eq(swapGroupMatch.senderId, locals.user.id)),
+        )
+    )[0];
+
     return {
       joined: {
         group,
@@ -98,6 +120,7 @@ export async function load({ locals, params }) {
         })),
         restrictions: group.owner?.id === locals.user.id ? restrictions : null,
         isOwner: group.owner?.id === locals.user.id,
+        match: match ? match : null,
       },
     };
   } else {

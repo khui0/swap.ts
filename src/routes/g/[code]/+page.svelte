@@ -12,6 +12,7 @@
   import TablerTrash from "~icons/tabler/trash";
   import TablerUserX from "~icons/tabler/user-x";
   import type { PageProps } from "./$types";
+  import Modal from "$lib/components/modal/modal.svelte";
 
   let { data }: PageProps = $props();
 
@@ -20,6 +21,7 @@
   let editMessageModal = <EditMessageModal>$state();
   let editGroupModal = <EditGroupModal>$state();
   let editRestrictionsModal = <EditRestrictionsModal>$state();
+  let matchModal = <Modal>$state();
   let deleteGroupConfirm = <Confirm>$state();
   let deleteUserConfirm = <Confirm>$state();
 
@@ -130,7 +132,11 @@
     <ul class="flex flex-col gap-2">
       {#if data.joined.isOwner}
         <div class="flex h-20 items-center justify-center container-dotted p-4">
-          <button class="btn" onclick={generateMatches}>Generate Matches</button>
+          {#if !data.joined.group.closed}
+            <button class="btn" onclick={generateMatches}>Generate Matches</button>
+          {:else}
+            <button class="btn">Reopen Group</button>
+          {/if}
         </div>
       {/if}
       <div class="flex min-h-20 items-center justify-center container-dotted px-4 py-3">
@@ -144,7 +150,7 @@
             {/if}
           </p>
         {:else}
-          <button class="btn">View Your Match</button>
+          <button class="btn" onclick={matchModal.show}>View Your Recipient</button>
         {/if}
       </div>
       {#each data.joined.members as member}
@@ -201,6 +207,29 @@
       bind:this={editRestrictionsModal}
     />
   {/if}
+
+  <Modal bind:this={matchModal}>
+    {#if data.joined.match !== null}
+      <div class="flex flex-col items-center gap-2 text-center">
+        <h2>Your Recipient</h2>
+        <p class="my-2 text-4xl font-bold">{data.joined.match.name}</p>
+        <p>
+          <span class="italic">
+            "{data.joined.match.message || `${data.joined.match.name} did not leave a message`}"
+          </span>
+        </p>
+        {#if data.joined.match.hiddenMessage}
+          <p class="text-sm text-base-content/80">
+            The message above is hidden and can only be seen by you
+          </p>
+        {/if}
+        <p class="text-sm text-base-content/80">
+          Remember to review the group description for details
+        </p>
+        <p>{data.joined.group.description}</p>
+      </div>
+    {/if}
+  </Modal>
 {:else}
   <div class="flex w-full max-w-xl flex-col gap-2 p-4">
     <h1>Join {data.name}</h1>
