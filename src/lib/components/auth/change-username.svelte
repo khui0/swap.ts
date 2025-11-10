@@ -11,11 +11,13 @@
 
   type FormState = (typeof FormState)[keyof typeof FormState];
 
+  let { current }: { current: string } = $props();
+
   let formState = $state(FormState.Idle);
   let errorMessage = $state("");
   let errorCode = $state("");
 
-  let newName = $state("");
+  let newName = $state(current);
 
   async function submit() {
     const { error } = await authClient.updateUser({
@@ -28,7 +30,6 @@
       errorCode = error.code || "";
     } else {
       formState = FormState.Success;
-      newName = "";
     }
   }
 </script>

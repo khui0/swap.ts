@@ -11,14 +11,16 @@
 
   type FormState = (typeof FormState)[keyof typeof FormState];
 
+  let { current }: { current: string } = $props();
+
   let formState = $state(FormState.Idle);
   let errorMessage = $state("");
   let errorCode = $state("");
 
-  let newEmail = $state("");
+  let newEmail = $state(current);
 
   async function changeEmail() {
-    const { data, error } = await authClient.changeEmail({
+    const { error } = await authClient.changeEmail({
       newEmail,
       callbackURL: "/",
     });
@@ -29,12 +31,17 @@
       errorCode = error.code || "";
     } else {
       formState = FormState.Success;
-      newEmail = "";
     }
   }
 </script>
 
-<input type="email" class="input w-full" placeholder="New Email" bind:value={newEmail} />
+<input
+  type="email"
+  autocomplete="email"
+  class="input w-full"
+  placeholder="New Email"
+  bind:value={newEmail}
+/>
 {#if formState !== FormState.Idle}
   <p class="self-stretch text-sm font-medium text-base-content/80">
     {#if formState === FormState.Error}
