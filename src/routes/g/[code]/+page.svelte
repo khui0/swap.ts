@@ -122,7 +122,12 @@
       <div class="flex h-20 items-center justify-center container-dotted p-4">
         {#if !data.joined.group.closed}
           <p class="text-sm font-medium text-base-content/50">
-            Matches haven't been picked yet! We'll send you an email when you receive your match.
+            {#if !data.joined.isOwner}
+              Matches haven't been picked yet! We'll send you an email when you receive your match.
+            {:else}
+              Matches haven't been picked yet! This group is currently joinable. Once you generate
+              matches, this group will become closed.
+            {/if}
           </p>
         {:else}
           <button class="btn">View Your Match</button>
