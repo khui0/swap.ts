@@ -63,13 +63,15 @@
 
 <Modal title="Edit Restrictions" bind:this={modal}>
   <p class="text-sm">
-    Select which recipients <b>{currentUser?.name}</b> is not allowed to be matched with.
+    Select which recipients <b>{currentUser?.name}</b> is allowed to be matched with.
   </p>
   <ul class="flex flex-col gap-2">
     {#each members.filter((user) => user.id !== currentUser?.id) as member}
-      <li class="grid grid-cols-[1fr_auto] gap-2">
-        <p>{member.name}</p>
-        <input type="checkbox" checked class="toggle" />
+      <li>
+        <label class="label grid grid-cols-[1fr_auto] gap-2 text-base-content">
+          {member.name}
+          <input type="checkbox" checked class="toggle" />
+        </label>
       </li>
     {/each}
   </ul>

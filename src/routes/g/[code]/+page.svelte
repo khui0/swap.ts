@@ -11,6 +11,7 @@
   import { APP_NAME } from "$lib/meta";
   import TablerPlus from "~icons/tabler/plus";
   import EditRestrictionsModal from "$lib/components/group/edit-restrictions-modal.svelte";
+  import TablerUserX from "~icons/tabler/user-x";
 
   let { data }: PageProps = $props();
 
@@ -108,12 +109,17 @@
             </p>
           </div>
           <div class="flex items-center justify-between gap-2">
-            <button
-              class="btn"
-              onclick={() => {
-                editRestrictionsModal.show(member);
-              }}>Edit Restrictions</button
-            >
+            {#if data.joined.isOwner}
+              <button
+                class="btn"
+                onclick={() => {
+                  editRestrictionsModal.show(member);
+                }}
+              >
+                Edit Restrictions
+              </button>
+              <button class="btn btn-circle"><TablerUserX /></button>
+            {/if}
           </div>
         </div>
       {/each}
