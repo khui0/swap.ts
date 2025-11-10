@@ -48,10 +48,20 @@ export async function PUT({ request, locals, params }) {
     });
 
   if (restrictions.length === 0) {
-    return json({}, { status: 200 });
+    try {
+      await db
+        .delete(swapGroupRestriction)
+        .where(
+          and(
+            eq(swapGroupRestriction.groupId, group.groupId),
+            eq(swapGroupRestriction.senderId, body.senderId),
+          ),
+        );
+      return json({}, { status: 201 });
+    } catch {
+      return error(500);
+    }
   }
-
-  console.log(restrictions);
 
   try {
     await db.transaction(async (tx) => {
