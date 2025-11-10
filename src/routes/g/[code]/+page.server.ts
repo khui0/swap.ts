@@ -1,9 +1,19 @@
 import { db } from "$lib/server/db/index.js";
 import { swapGroup, swapGroupMember, user } from "$lib/server/db/schema.js";
-import { error } from "@sveltejs/kit";
 import { and, asc, eq, or } from "drizzle-orm";
 
 export async function load({ locals, params }) {
+  const basic = (
+    await db
+      .select({
+        name: swapGroup.name,
+        description: swapGroup.description,
+        code: swapGroup.code,
+      })
+      .from(swapGroup)
+      .where(eq(swapGroup.code, params.code))
+  )[0];
+
   if (locals.user && locals.session) {
     const group = (
       await db
@@ -32,9 +42,12 @@ export async function load({ locals, params }) {
     )[0];
 
     if (!group) {
-      return error(403, "Unauthorized");
+      return {
+        name: basic.name,
+        code: basic.code,
+      };
     }
-    
+
     const members = await db
       .select({
         id: user.id,
@@ -62,17 +75,22 @@ export async function load({ locals, params }) {
     )[0];
 
     return {
-      group,
-      self,
-      members: members.map((user) => ({
-        id: user.id,
-        name: user.name,
-        message: user.hiddenMessage ? "" : user.message,
-        hiddenMessage: user.hiddenMessage,
-      })),
-      isOwner: group.owner?.id === locals.user.id,
+      joined: {
+        group,
+        self,
+        members: members.map((user) => ({
+          id: user.id,
+          name: user.name,
+          message: user.hiddenMessage ? "" : user.message,
+          hiddenMessage: user.hiddenMessage,
+        })),
+        isOwner: group.owner?.id === locals.user.id,
+      },
     };
   } else {
-    return error(403, "Unauthorized");
+    return {
+      name: basic.name,
+      code: basic.code,
+    };
   }
 }

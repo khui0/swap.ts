@@ -4,7 +4,7 @@
   import TablerUserPlus from "~icons/tabler/user-plus";
   import TablerCircleCheckFilled from "~icons/tabler/circle-check-filled";
   import { goto } from "$app/navigation";
-    import { APP_NAME } from "$lib/meta";
+  import { APP_NAME } from "$lib/meta";
 
   const FormState = {
     Idle: 0,
@@ -24,13 +24,15 @@
   let errorMessage = $state("");
 
   async function register() {
+    const code = new URLSearchParams(window.location.search).get("code");
+
     const { data, error } = await authClient.signUp.email(
       {
         email,
         password,
         name,
         image,
-        callbackURL: "/",
+        callbackURL: code ? `/g/${code}` : "/",
       },
       {
         onRequest: (ctx) => {

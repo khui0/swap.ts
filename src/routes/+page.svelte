@@ -54,8 +54,10 @@
     </div>
   </div>
   {#if $session.data === null}
-    <a class="btn btn-primary" href="/sign-up">Get Started</a>
-    <a class="btn btn-ghost" href="/sign-in">Sign into existing account</a>
+    <div class="flex gap-2">
+      <a class="btn btn-primary" href="/sign-up">Get Started</a>
+      <a class="btn btn-ghost" href="/sign-in">Sign into existing account</a>
+    </div>
   {:else}
     <ul class="flex flex-col gap-2">
       {#if data.groups?.length || 0 > 0}

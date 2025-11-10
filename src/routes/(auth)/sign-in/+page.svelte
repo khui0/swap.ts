@@ -27,10 +27,12 @@
   let sentReset = $state(false);
 
   async function signIn() {
+    const code = new URLSearchParams(window.location.search).get("code");
+
     const { data, error } = await authClient.signIn.email({
       email,
       password,
-      callbackURL: "/",
+      callbackURL: code ? `/g/${code}` : "/",
       rememberMe,
     });
     if (error) {
