@@ -1,5 +1,5 @@
 import { db } from "$lib/server/db/index.js";
-import { swapGroup, swapGroupMember, user } from "$lib/server/db/schema.js";
+import { swapGroup, swapGroupMember, swapGroupRestriction, user } from "$lib/server/db/schema.js";
 import { and, asc, eq, or } from "drizzle-orm";
 
 export async function load({ locals, params }) {
@@ -75,6 +75,12 @@ export async function load({ locals, params }) {
         )
     )[0];
 
+    const restrictions = (
+      await db.select().from(swapGroupRestriction).where(eq(swapGroupRestriction.groupId, group.id))
+    ).map((item) => `${item.senderId}->${item.recipientId}`);
+
+    console.log(restrictions);
+
     return {
       joined: {
         group,
@@ -85,6 +91,7 @@ export async function load({ locals, params }) {
           message: user.hiddenMessage ? "" : user.message,
           hiddenMessage: user.hiddenMessage,
         })),
+        restrictions: new Set(restrictions),
         isOwner: group.owner?.id === locals.user.id,
       },
     };

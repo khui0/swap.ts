@@ -35,13 +35,17 @@ export async function PUT({ request, locals, params }) {
     return error(400, "Missing sender ID");
   }
 
-  const restrictions = (body.restrictions as string[]).map((recipientId: string) => {
-    return {
-      groupId: group.groupId,
-      senderId: body.senderId,
-      recipientId,
-    };
-  });
+  const restrictions = (body.restrictions as string[])
+    .filter((item) => {
+      return item.split("->")[0] === body.senderId;
+    })
+    .map((item) => {
+      return {
+        groupId: group.groupId,
+        senderId: body.senderId,
+        recipientId: item.split("->")[1],
+      };
+    });
 
   if (restrictions.length === 0) {
     return json({}, { status: 200 });

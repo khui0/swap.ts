@@ -12,7 +12,7 @@
   let {
     code,
     members,
-    restrictions = new Set(),
+    restrictions,
   }: {
     code: string;
     members: User[];
@@ -51,7 +51,7 @@
         senderId: currentUser.id,
         restrictions: Array.from(restrictions).map((item: string) => {
           const [senderId, recipientId] = item.split("->");
-          return recipientId;
+          return `${senderId}->${recipientId}`;
         }),
       }),
     });
