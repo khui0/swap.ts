@@ -10,6 +10,7 @@
   import { authClient } from "$lib/auth-client";
   import { APP_NAME } from "$lib/meta";
   import TablerPlus from "~icons/tabler/plus";
+  import EditRestrictionsModal from "$lib/components/group/edit-restrictions-modal.svelte";
 
   let { data }: PageProps = $props();
 
@@ -17,6 +18,7 @@
 
   let editMessageModal = <EditMessageModal>$state();
   let editGroupModal = <EditGroupModal>$state();
+  let editRestrictionsModal = <EditRestrictionsModal>$state();
   let deleteGroupConfirm = <Confirm>$state();
 
   async function deleteGroup() {
@@ -106,7 +108,12 @@
             </p>
           </div>
           <div class="flex items-center justify-between gap-2">
-            <button class="btn">Edit Restrictions</button>
+            <button
+              class="btn"
+              onclick={() => {
+                editRestrictionsModal.show(member);
+              }}>Edit Restrictions</button
+            >
           </div>
         </div>
       {/each}
@@ -117,6 +124,12 @@
   <EditMessageModal code={data.joined.group.code} bind:this={editMessageModal} />
 
   <EditGroupModal code={data.joined.group.code} bind:this={editGroupModal} />
+
+  <EditRestrictionsModal
+    code={data.joined.group.code}
+    members={data.joined.members}
+    bind:this={editRestrictionsModal}
+  />
 {:else}
   <div class="flex w-full max-w-xl flex-col gap-2 p-4">
     <h1>Join {data.name}</h1>

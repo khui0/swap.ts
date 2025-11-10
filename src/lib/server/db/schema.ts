@@ -95,8 +95,8 @@ export const swapGroupMember = pgTable(
     userId: text("user_id")
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
-    message: text("message"),
-    hiddenMessage: boolean("hidden_message"),
+    message: text("message").notNull(),
+    hiddenMessage: boolean("hidden_message").notNull(),
   },
   (table) => [uniqueIndex("unique_member_per_group").on(table.groupId, table.userId)],
 );
@@ -147,6 +147,10 @@ export const swapGroupRestriction = pgTable(
       .references(() => user.id, { onDelete: "cascade" }),
   },
   (table) => [
-    uniqueIndex("unique_restriction_per_group").on(table.groupId, table.senderId, table.recipientId),
+    uniqueIndex("unique_restriction_per_group").on(
+      table.groupId,
+      table.senderId,
+      table.recipientId,
+    ),
   ],
 );

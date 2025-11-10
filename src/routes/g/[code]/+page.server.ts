@@ -56,7 +56,7 @@ export async function load({ locals, params }) {
         hiddenMessage: swapGroupMember.hiddenMessage,
       })
       .from(swapGroupMember)
-      .leftJoin(user, eq(swapGroupMember.userId, user.id))
+      .innerJoin(user, eq(swapGroupMember.userId, user.id))
       .where(eq(swapGroupMember.groupId, group.id))
       .orderBy(asc(user.name));
 
