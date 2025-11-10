@@ -66,15 +66,15 @@
             class="flex h-20 flex-col justify-between rounded-field bg-base-200 px-4 py-3"
             href="/g/{group.code}"
           >
-            <div class="flex items-start justify-between">
-              <div class="grid grid-cols-[1fr_auto] gap-2">
+            <div class="grid grid-cols-[1fr_auto] items-start gap-2">
+              <div class="flex items-center gap-2 overflow-hidden">
                 <h2
                   class="overflow-hidden text-2xl text-ellipsis whitespace-nowrap text-base-content"
                 >
                   {group.name}
                 </h2>
                 {#if group.closed}
-                  <span class="text-xl"><TablerLock /></span>
+                  <span class="inline-flex text-xl"><TablerLock /></span>
                 {/if}
               </div>
               <p class="container-badge shrink-0">
