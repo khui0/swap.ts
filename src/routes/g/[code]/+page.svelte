@@ -35,12 +35,21 @@
     }
   }
 
+  let currentUserIdToRemove: { id: string; name: string } | null = $state(null);
+
   async function removeUser(userId: string) {
-    if (!data.joined || !data.joined.isOwner) return;
+    if (!data.joined) return;
 
     const response = await fetch(`/api/group/${data.joined.group.code}/user`, {
       method: "DELETE",
+      body: JSON.stringify({
+        userId,
+      }),
     });
+
+    if (response.ok) {
+      invalidateAll();
+    }
   }
 </script>
 
@@ -143,7 +152,16 @@
               >
                 Edit Restrictions
               </button>
-              <button class="btn btn-circle"><TablerUserX /></button>
+              <button
+                class="btn btn-circle btn-ghost"
+                disabled={data.joined.self.id === member.id}
+                onclick={() => {
+                  currentUserIdToRemove = member;
+                  deleteUserConfirm.prompt();
+                }}
+              >
+                <TablerUserX />
+              </button>
             {/if}
           </div>
         </div>
@@ -200,9 +218,13 @@
 
 <Confirm
   bind:this={deleteUserConfirm}
-  title="Remove ?"
-  body="This action is irreversible. All members will be removed from the group."
-  action="Delete"
+  title="Remove {currentUserIdToRemove?.name}?"
+  body="Doing so will not notify them."
+  action="Remove"
   destructive
-  onaccept={deleteGroup}
+  onaccept={() => {
+    if (currentUserIdToRemove === null) return;
+    removeUser(currentUserIdToRemove.id);
+    currentUserIdToRemove = null;
+  }}
 />
