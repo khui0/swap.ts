@@ -1,6 +1,7 @@
-type Assignment = Record<string, string>;
-
-export function swap(participants: string[], restricted: Set<string>): Assignment | null {
+export function swap(
+  participants: string[],
+  restricted: Set<string>,
+): Record<string, string> | null {
   // Precompute allowed receivers per giver
   const allowed: Record<string, string[]> = {};
   for (const giver of participants) {
@@ -14,11 +15,11 @@ export function swap(participants: string[], restricted: Set<string>): Assignmen
   // Randomize order to reduce bias & increase success likelihood
   const randomOrder = [...participants].sort(() => Math.random() - 0.5);
 
-  const used = new Set<string>(); // receivers already taken
-  const assignment: Assignment = {}; // partial assignment
+  const used = new Set<string>();
+  const assignment: Record<string, string> = {};
 
   function dfs(index: number): boolean {
-    if (index === randomOrder.length) return true; // all assigned
+    if (index === randomOrder.length) return true;
 
     const giver = randomOrder[index];
 
