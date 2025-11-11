@@ -68,9 +68,13 @@
   >
     {messageValue.length}/250
   </p>
-  <label class="label text-sm">
+  <label class="label text-sm select-none text-wrap">
     <input type="checkbox" bind:checked={hiddenValue} class="toggle toggle-sm" />
-    Hidden (only your gifter can see your message)
+    Hide message ({#if hiddenValue}
+      only visible to your gifter
+    {:else}
+      visible to everyone
+    {/if})
   </label>
   {#if formState !== FormState.Idle}
     <p class="self-stretch text-sm font-medium text-base-content/80">
