@@ -75,7 +75,7 @@
           <h1>
             {data.joined.group.name.substring(0, 100)}
             {#if data.joined.group.closed}
-              <span class="inline-flex text-xl"><TablerLock /></span>
+              <span class="inline-flex text-2xl"><TablerLock /></span>
             {/if}
           </h1>
         </div>
@@ -135,7 +135,7 @@
           {#if !data.joined.group.closed}
             <button class="btn" onclick={generateMatches}>Generate Matches</button>
           {:else}
-            <button class="btn">Reopen Group</button>
+            <button class="btn">Reset Matches</button>
           {/if}
         </div>
       {/if}
