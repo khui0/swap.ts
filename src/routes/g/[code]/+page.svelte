@@ -107,7 +107,21 @@
       invalidateAll();
     }
   }
+
+  console.log(data);
 </script>
+
+<svelte:head>
+  <title>
+    {data.joined ? `${data.joined.group.name} — ${APP_NAME}` : `Join ${data.name} on ${APP_NAME}`}
+  </title>
+  <meta
+    property="og:title"
+    content={data.joined
+      ? `${data.joined.group.name} — ${APP_NAME}`
+      : `Join ${data.name} on ${APP_NAME}`}
+  />
+</svelte:head>
 
 {#if data.joined}
   <div class="flex justify-between">

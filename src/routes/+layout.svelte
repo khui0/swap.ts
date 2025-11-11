@@ -9,6 +9,11 @@
 
 <svelte:head>
   <title>{APP_NAME}</title>
+  <meta name="description" content="General purpose gift exchange matcher ❄️" />
+
+  <meta property="og:title" content={APP_NAME} />
+  <meta property="og:description" content="General purpose gift exchange matcher ❄️" />
+  <meta property="og:site_name" content={APP_NAME} />
 </svelte:head>
 
 <div class="flex min-h-full flex-col items-center justify-center bg-sky-100 p-2">
