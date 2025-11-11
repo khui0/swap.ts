@@ -2,8 +2,8 @@
 
 # swap.ts
 
-![GitHub package.json version](https://img.shields.io/github/package-json/v/khui0/swap.ts?color=%23230c4a6e)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/khui0/swap.ts?color=%23230c4a6e)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/khui0/swap.ts?color=%230c4a6e)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/khui0/swap.ts?color=%230c4a6e)
 ![Website](https://img.shields.io/website?url=https%3A%2F%2Fswap.kennyhui.dev%2F&color=%230c4a6e)
 
 ### Try it here: [swap.kennyhui.dev](https://swap.kennyhui.dev/)
