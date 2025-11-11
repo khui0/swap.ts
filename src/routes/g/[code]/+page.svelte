@@ -171,7 +171,7 @@
                 <span class="text-lg text-success">
                   <TablerCircleCheckFilled class="inline h-[1.2em] w-[1.2em] align-middle" />
                 </span>
-                Updated my message
+                Generated matches. Emails have been sent to all members.
               {/if}
             </p>
           {/if}
@@ -256,7 +256,7 @@
         <p class="my-2 text-4xl font-bold">{data.joined.match.name}</p>
         <p>
           <span class="italic">
-            "{data.joined.match.message || `${data.joined.match.name} did not leave a message`}"
+            {data.joined.match.message ? `"${data.joined.match.message}"` : "No message"}
           </span>
         </p>
         {#if data.joined.match.hiddenMessage}
