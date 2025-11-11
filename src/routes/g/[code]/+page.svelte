@@ -107,8 +107,6 @@
       invalidateAll();
     }
   }
-
-  console.log(data);
 </script>
 
 <svelte:head>
