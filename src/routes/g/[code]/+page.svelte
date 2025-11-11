@@ -6,6 +6,7 @@
   import EditRestrictionsModal from "$lib/components/group/edit-restrictions-modal.svelte";
   import Confirm from "$lib/components/modal/confirm.svelte";
   import Modal from "$lib/components/modal/modal.svelte";
+  import { run } from "$lib/components/particles/confetti";
   import { APP_NAME } from "$lib/meta";
   import TablerCircleCheckFilled from "~icons/tabler/circle-check-filled";
   import TablerExclamationCircleFilled from "~icons/tabler/exclamation-circle-filled";
@@ -257,6 +258,9 @@
   <Modal
     bind:this={matchModal}
     title={data.joined.match === null ? "Unable to find your recipient" : ""}
+    onshow={() => {
+      run();
+    }}
   >
     {#if data.joined.match !== null}
       <div class="flex flex-col items-center gap-2 text-center">
