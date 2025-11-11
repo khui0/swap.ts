@@ -27,7 +27,7 @@
   };
 </script>
 
-<dialog class="modal open:bg-black/10" bind:this={modal} {onclose}>
+<dialog class="modal open:bg-white/50" bind:this={modal} {onclose}>
   <div class="modal-box p-4">
     <form method="dialog">
       <button class="btn absolute top-3 right-3 btn-square text-xl btn-ghost" aria-label="Close">
