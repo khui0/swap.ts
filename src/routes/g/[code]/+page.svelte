@@ -9,14 +9,14 @@
   import { APP_NAME } from "$lib/meta";
   import TablerCircleCheckFilled from "~icons/tabler/circle-check-filled";
   import TablerExclamationCircleFilled from "~icons/tabler/exclamation-circle-filled";
+  import TablerHandStop from "~icons/tabler/hand-stop";
   import TablerLock from "~icons/tabler/lock";
+  import TablerMessage from "~icons/tabler/message";
   import TablerPencil from "~icons/tabler/pencil";
   import TablerPlus from "~icons/tabler/plus";
   import TablerTrash from "~icons/tabler/trash";
   import TablerUserX from "~icons/tabler/user-x";
-  import TablerHandStop from "~icons/tabler/hand-stop";
   import type { PageProps } from "./$types";
-  import TablerMessage from "~icons/tabler/message";
 
   const FormState = {
     Idle: 0,
