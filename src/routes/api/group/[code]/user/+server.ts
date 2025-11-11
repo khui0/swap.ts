@@ -60,10 +60,6 @@ export async function PATCH({ request, locals, params }) {
 
   const body = await request.json();
 
-  if (!body.message) {
-    return error(400, "Invalid parameters");
-  }
-
   if (body.message.length > 250) {
     return error(400, "Message cannot exceed 250 characters");
   }
@@ -72,7 +68,7 @@ export async function PATCH({ request, locals, params }) {
     await db
       .update(swapGroupMember)
       .set({
-        message: body.message,
+        message: body.message || "",
         hiddenMessage: body.hidden,
       })
       .where(
