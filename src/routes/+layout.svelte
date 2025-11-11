@@ -16,9 +16,17 @@
   <meta property="og:site_name" content={APP_NAME} />
 </svelte:head>
 
-<div class="flex min-h-full flex-col items-center justify-center bg-sky-100 p-2">
+<div class="snow flex min-h-full flex-col items-center justify-center bg-sky-100 p-2">
   <div class="flex w-full max-w-xl flex-col gap-2 rounded-box bg-base-100 p-4">
     {@render children()}
   </div>
 </div>
 <Snow />
+
+<style>
+  .snow {
+    background-image: url("$lib/assets/snow-cap.png");
+    background-size: 200px;
+    background-repeat: repeat-x;
+  }
+</style>
