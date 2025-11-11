@@ -11,7 +11,9 @@
       e.preventDefault();
     }}
   >
-    <enhanced:img src="$lib/assets/icon.png" alt="swap.ts icon" class="w-16 mt-4" />
+    <a href="/" aria-label="swap.ts home"
+      ><enhanced:img src="$lib/assets/icon.png" alt="swap.ts icon" class="mt-4 w-16" /></a
+    >
     {@render children?.()}
   </form>
 </div>
