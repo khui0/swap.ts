@@ -1,38 +1,33 @@
-# sv
+<img src="https://github.com/user-attachments/assets/a0122954-e703-432c-ba48-fd87693db948" height=128>
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+# swap.ts
 
-## Creating a project
+![GitHub package.json version](https://img.shields.io/github/package-json/v/khui0/swap.ts?color=%23#ed3640)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/khui0/swap.ts?color=%23#ed3640)
+![Website](https://img.shields.io/website?url=https%3A%2F%2Fswap.kennyhui.dev%2F&color=%23#ed3640)
 
-If you're seeing this, you've probably already done this step. Congrats!
+### Try it here: [swap.kennyhui.dev](https://swap.kennyhui.dev/)
 
-```sh
-# create a new project in the current directory
-npx sv create
+General purpose gift exchange matcher
 
-# create a new project in my-app
-npx sv create my-app
+## Development
+
+Install dependencies
+
+```bash
+npm i
 ```
 
-## Developing
+Run dev server
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
+```bash
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
 ## Building
 
-To create a production version of your app:
+Project will be built to `/dist`
 
-```sh
+```bash
 npm run build
 ```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
