@@ -28,6 +28,11 @@
   let joinGroupModal = <JoinGroupModal>$state();
 </script>
 
+<svelte:head>
+  <title>{APP_NAME}</title>
+  <meta property="og:title" content={APP_NAME} />
+</svelte:head>
+
 <div class="flex flex-wrap items-center justify-between gap-2">
   <h1 class="mb-1 text-4xl">{APP_NAME}</h1>
   <div class="flex items-center gap-2">
