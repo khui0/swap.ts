@@ -79,7 +79,7 @@
   class="input w-full"
   bind:value={password}
 />
-<label class="label text-sm">
+<label class="label text-sm select-none">
   <input type="checkbox" bind:checked={rememberMe} class="checkbox checkbox-sm" />
   Remember me
 </label>
