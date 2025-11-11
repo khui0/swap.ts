@@ -246,7 +246,10 @@
     />
   {/if}
 
-  <Modal bind:this={matchModal} title={data.joined.match === null ? "Error" : ""}>
+  <Modal
+    bind:this={matchModal}
+    title={data.joined.match === null ? "Unable to find your recipient" : ""}
+  >
     {#if data.joined.match !== null}
       <div class="flex flex-col items-center gap-2 text-center">
         <h2>Your Recipient</h2>
@@ -268,7 +271,8 @@
       </div>
     {:else}
       <p class="text-sm text-base-content/80">
-        Unable to find match. Ask the group owner to generate new matches.
+        An unforeseen error has been encountered. This may happen if your recipient leaves the group
+        after matches have been generated. Ask the group owner to generate new matches.
       </p>
     {/if}
   </Modal>
