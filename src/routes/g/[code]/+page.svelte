@@ -14,7 +14,9 @@
   import TablerPlus from "~icons/tabler/plus";
   import TablerTrash from "~icons/tabler/trash";
   import TablerUserX from "~icons/tabler/user-x";
+  import TablerHandStop from "~icons/tabler/hand-stop";
   import type { PageProps } from "./$types";
+  import TablerMessage from "~icons/tabler/message";
 
   const FormState = {
     Idle: 0,
@@ -122,14 +124,17 @@
       </div>
       <div class="flex shrink-0 gap-2">
         <button
-          class="btn"
+          class="btn max-sm:btn-circle"
           onclick={() => {
             editMessageModal.show(
               data.joined.self.message || "",
               data.joined.self.hiddenMessage || false,
             );
-          }}>Edit Message</button
+          }}
         >
+          <TablerMessage />
+          <span class="max-sm:hidden">Edit Message</span>
+        </button>
         {#if data.joined.isOwner}
           <button
             aria-label="Edit group"
@@ -194,7 +199,9 @@
       {#each data.joined.members as member}
         <div class="grid h-20 grid-cols-[1fr_auto] gap-2 rounded-field bg-base-200 px-4 py-3">
           <div class="flex flex-col justify-between overflow-hidden">
-            <h2 class="text-2xl text-base-content">{member.name}</h2>
+            <h2 class="overflow-hidden text-2xl text-ellipsis whitespace-nowrap text-base-content">
+              {member.name}
+            </h2>
             <p class="overflow-hidden text-sm text-ellipsis whitespace-nowrap text-base-content/80">
               {#if member.id === $session.data?.user.id}
                 {data.joined.self.message || "No message"}{data.joined.self.hiddenMessage
@@ -208,12 +215,13 @@
           <div class="flex items-center justify-between gap-2">
             {#if data.joined.isOwner}
               <button
-                class="btn"
+                class="btn max-sm:btn-circle"
                 onclick={() => {
                   editRestrictionsModal.show(member);
                 }}
               >
-                Edit Restrictions
+                <TablerHandStop />
+                <span class="max-sm:hidden">Edit Restrictions</span>
               </button>
               <button
                 class="btn btn-circle btn-ghost"
