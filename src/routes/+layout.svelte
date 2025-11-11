@@ -11,7 +11,9 @@
   <title>{APP_NAME}</title>
 </svelte:head>
 
-<div class="flex min-h-full flex-col items-center justify-center">
-  {@render children()}
+<div class="flex min-h-full flex-col items-center justify-center bg-sky-100 p-2">
+  <div class="flex w-full max-w-xl flex-col gap-2 rounded-box bg-base-100 p-4">
+    {@render children()}
+  </div>
 </div>
 <Snow />

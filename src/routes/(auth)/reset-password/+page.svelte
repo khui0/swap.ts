@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { authClient } from "$lib/auth-client";
-  import TablerKey from "~icons/tabler/key";
-  import TablerExclamationCircleFilled from "~icons/tabler/exclamation-circle-filled";
-  import TablerCircleCheckFilled from "~icons/tabler/circle-check-filled";
-  import { onMount } from "svelte";
   import { goto } from "$app/navigation";
+  import { authClient } from "$lib/auth-client";
+  import { onMount } from "svelte";
+  import TablerCircleCheckFilled from "~icons/tabler/circle-check-filled";
+  import TablerExclamationCircleFilled from "~icons/tabler/exclamation-circle-filled";
 
   const FormState = {
     Idle: 0,
@@ -55,7 +54,6 @@
   }
 </script>
 
-<span class="m-0 text-4xl"><TablerKey /></span>
 <h1 class="mb-2 text-2xl font-semibold">Reset password</h1>
 <input
   type="password"

@@ -28,85 +28,83 @@
   let joinGroupModal = <JoinGroupModal>$state();
 </script>
 
-<div class="flex w-full max-w-xl flex-col gap-2 p-4">
-  <div class="flex flex-wrap items-center justify-between gap-2">
-    <h1 class="mb-1 text-4xl">{APP_NAME}</h1>
-    <div class="flex items-center gap-2">
-      {#if $session.data !== null}
-        <button
-          class="btn"
-          onclick={() => {
-            accountModal?.show();
-          }}
-        >
-          {$session.data.user.name}
-        </button>
-        <button
-          aria-label="Sign out"
-          class="btn btn-circle"
-          onclick={async () => {
-            await authClient.signOut();
-          }}
-        >
-          <span class="translate-x-0.5"><TablerLogout /></span>
-        </button>
-      {/if}
-    </div>
+<div class="flex flex-wrap items-center justify-between gap-2">
+  <h1 class="mb-1 text-4xl">{APP_NAME}</h1>
+  <div class="flex items-center gap-2">
+    {#if $session.data !== null}
+      <button
+        class="btn"
+        onclick={() => {
+          accountModal?.show();
+        }}
+      >
+        {$session.data.user.name}
+      </button>
+      <button
+        aria-label="Sign out"
+        class="btn btn-circle"
+        onclick={async () => {
+          await authClient.signOut();
+        }}
+      >
+        <span class="translate-x-0.5"><TablerLogout /></span>
+      </button>
+    {/if}
   </div>
-  {#if $session.data === null}
-    <div class="flex gap-2">
-      <a class="btn btn-primary" href="/sign-up">Get Started</a>
-      <a class="btn btn-ghost" href="/sign-in">Sign into existing account</a>
-    </div>
-  {:else}
-    <ul class="flex flex-col gap-2">
-      {#if data.groups?.length || 0 > 0}
-        {#each data.groups as group}
-          <a
-            class="flex h-20 flex-col justify-between rounded-field bg-base-200 px-4 py-3"
-            href="/g/{group.code}"
-          >
-            <div class="grid grid-cols-[1fr_auto] items-start gap-2">
-              <div class="flex items-center gap-2 overflow-hidden">
-                <h2
-                  class="overflow-hidden text-2xl text-ellipsis whitespace-nowrap text-base-content"
-                >
-                  {group.name}
-                </h2>
-                {#if group.closed}
-                  <span class="inline-flex text-xl"><TablerLock /></span>
-                {/if}
-              </div>
-              <p class="container-badge shrink-0">
-                Updated {dayjs(group.updatedAt).from(dayjs())}
-              </p>
-            </div>
-            <div class="grid grid-cols-[1fr_auto] gap-2 text-base-content/80">
-              <p class="overflow-hidden text-sm text-ellipsis whitespace-nowrap">
-                {group.description}
-              </p>
-              <p class="overflow-hidden text-sm text-ellipsis whitespace-nowrap">{group.owner}</p>
-            </div>
-          </a>
-        {/each}
-      {:else}
-        <div class="flex h-20 items-center justify-center container-dotted p-4">
-          <p class="text-sm font-medium text-base-content/50">You aren't in any groups</p>
-        </div>
-      {/if}
-    </ul>
-    <div class="grid grid-cols-2 gap-2">
-      <button class="btn" onclick={joinGroupModal.show}>
-        <TablerPlus />
-        Join Group
-      </button>
-      <button class="btn" onclick={createGroupModal.show}>
-        <TablerPencil />
-        Create Group
-      </button>
-    </div>
-  {/if}
 </div>
+{#if $session.data === null}
+  <div class="flex gap-2">
+    <a class="btn btn-primary" href="/sign-up">Get Started</a>
+    <a class="btn btn-ghost" href="/sign-in">Sign into existing account</a>
+  </div>
+{:else}
+  <ul class="flex flex-col gap-2">
+    {#if data.groups?.length || 0 > 0}
+      {#each data.groups as group}
+        <a
+          class="flex h-20 flex-col justify-between rounded-field bg-base-200 px-4 py-3"
+          href="/g/{group.code}"
+        >
+          <div class="grid grid-cols-[1fr_auto] items-start gap-2">
+            <div class="flex items-center gap-2 overflow-hidden">
+              <h2
+                class="overflow-hidden text-2xl text-ellipsis whitespace-nowrap text-base-content"
+              >
+                {group.name}
+              </h2>
+              {#if group.closed}
+                <span class="inline-flex text-xl"><TablerLock /></span>
+              {/if}
+            </div>
+            <p class="container-badge shrink-0">
+              Updated {dayjs(group.updatedAt).from(dayjs())}
+            </p>
+          </div>
+          <div class="grid grid-cols-[1fr_auto] gap-2 text-base-content/80">
+            <p class="overflow-hidden text-sm text-ellipsis whitespace-nowrap">
+              {group.description}
+            </p>
+            <p class="overflow-hidden text-sm text-ellipsis whitespace-nowrap">{group.owner}</p>
+          </div>
+        </a>
+      {/each}
+    {:else}
+      <div class="flex h-20 items-center justify-center container-dotted p-4">
+        <p class="text-sm font-medium text-base-content/50">You aren't in any groups</p>
+      </div>
+    {/if}
+  </ul>
+  <div class="grid grid-cols-2 gap-2">
+    <button class="btn" onclick={joinGroupModal.show}>
+      <TablerPlus />
+      Join Group
+    </button>
+    <button class="btn" onclick={createGroupModal.show}>
+      <TablerPencil />
+      Create Group
+    </button>
+  </div>
+{/if}
 
 <Modal title={$session.data?.user.name || "Account"} bind:this={accountModal}>
   <div class="grid grid-cols-2 gap-2">

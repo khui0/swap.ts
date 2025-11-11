@@ -1,5 +1,4 @@
 <script lang="ts">
-  import snowflake from "$lib/assets/snowflake.svg";
   import { tsParticles } from "@tsparticles/engine";
   import { loadSnowPreset } from "@tsparticles/preset-snow";
   import { loadImageShape } from "@tsparticles/shape-image";
@@ -13,20 +12,6 @@
       options: {
         background: {
           opacity: 0,
-        },
-        particles: {
-          color: { value: "#7BE4FF" },
-          shape: {
-            type: "image",
-            options: {
-              image: {
-                src: snowflake,
-                width: 64,
-                height: 64,
-                replaceColor: true,
-              },
-            },
-          },
         },
         preset: "snow",
       },

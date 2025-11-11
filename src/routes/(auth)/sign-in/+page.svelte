@@ -1,12 +1,11 @@
 <script lang="ts">
+  import { goto } from "$app/navigation";
+  import { page } from "$app/state";
   import { authClient } from "$lib/auth-client";
-  import TablerExclamationCircleFilled from "~icons/tabler/exclamation-circle-filled";
-  import TablerLogin2 from "~icons/tabler/login-2";
+  import { APP_NAME } from "$lib/meta";
   import TablerAlertTriangleFilled from "~icons/tabler/alert-triangle-filled";
   import TablerCircleCheckFilled from "~icons/tabler/circle-check-filled";
-  import { page } from "$app/state";
-  import { goto } from "$app/navigation";
-  import { APP_NAME } from "$lib/meta";
+  import TablerExclamationCircleFilled from "~icons/tabler/exclamation-circle-filled";
 
   const FormState = {
     Idle: 0,
@@ -61,7 +60,6 @@
   }
 </script>
 
-<span class="m-0 text-4xl"><TablerLogin2 /></span>
 <h1 class="mb-2 text-2xl font-semibold">Sign in to {APP_NAME}</h1>
 <input
   type="email"
