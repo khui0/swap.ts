@@ -6,6 +6,7 @@ import {
   swapGroupRestriction,
   user,
 } from "$lib/server/db/schema.js";
+import { error } from "@sveltejs/kit";
 import { and, asc, eq, or } from "drizzle-orm";
 
 export async function load({ locals, params }) {
@@ -124,10 +125,14 @@ export async function load({ locals, params }) {
       },
     };
   } else {
-    return {
-      name: basic.name,
-      code: basic.code,
-      closed: basic.closed,
-    };
+    if (basic) {
+      return {
+        name: basic.name,
+        code: basic.code,
+        closed: basic.closed,
+      };
+    } else {
+      throw error(404, "Group not found");
+    }
   }
 }
