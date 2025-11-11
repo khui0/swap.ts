@@ -53,6 +53,20 @@
   </div>
 </div>
 {#if $session.data === null}
+  <div class="mb-2 text-sm">
+    <p>General purpose gift exchange matcher ❄️</p>
+    <p>
+      <a href="https://kennyhui.dev" target="_blank" rel="noopener noreferrer" class="link"
+        >Personal Site</a
+      >
+      <a
+        href="https://github.com/khui0/swap.ts"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="link">GitHub</a
+      >
+    </p>
+  </div>
   <div class="flex gap-2">
     <a class="btn btn-primary" href="/sign-up">Get Started</a>
     <a class="btn btn-ghost" href="/sign-in">Sign into existing account</a>
