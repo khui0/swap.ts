@@ -5,14 +5,27 @@
   import EditMessageModal from "$lib/components/group/edit-message-modal.svelte";
   import EditRestrictionsModal from "$lib/components/group/edit-restrictions-modal.svelte";
   import Confirm from "$lib/components/modal/confirm.svelte";
+  import Modal from "$lib/components/modal/modal.svelte";
   import { APP_NAME } from "$lib/meta";
+  import TablerCircleCheckFilled from "~icons/tabler/circle-check-filled";
+  import TablerExclamationCircleFilled from "~icons/tabler/exclamation-circle-filled";
   import TablerLock from "~icons/tabler/lock";
   import TablerPencil from "~icons/tabler/pencil";
   import TablerPlus from "~icons/tabler/plus";
   import TablerTrash from "~icons/tabler/trash";
   import TablerUserX from "~icons/tabler/user-x";
   import type { PageProps } from "./$types";
-  import Modal from "$lib/components/modal/modal.svelte";
+
+  const FormState = {
+    Idle: 0,
+    Success: 1,
+    Error: 2,
+  };
+
+  type FormState = (typeof FormState)[keyof typeof FormState];
+
+  let formState = $state(FormState.Idle);
+  let errorMessage = $state("");
 
   let { data }: PageProps = $props();
 
@@ -24,9 +37,12 @@
   let matchModal = <Modal>$state();
   let deleteGroupConfirm = <Confirm>$state();
   let deleteUserConfirm = <Confirm>$state();
+  let leaveGroupConfirm = <Confirm>$state();
+  let generateMatchesConfirm = <Confirm>$state();
+  let resetMatchesConfirm = <Confirm>$state();
 
   async function deleteGroup() {
-    if (!data.joined) return;
+    if (!data.joined || !data.joined.isOwner) return;
 
     const response = await fetch(`/api/group/${data.joined.group.code}`, {
       method: "DELETE",
@@ -54,11 +70,34 @@
     }
   }
 
+  async function leaveGroup() {
+    if (!data.joined) return;
+
+    await removeUser(data.joined.self.id);
+  }
+
   async function generateMatches() {
     if (!data.joined || !data.joined.isOwner) return;
 
-    const response = await fetch(`/api/group/${data.joined.group.code}/generate`, {
+    const response = await fetch(`/api/group/${data.joined.group.code}/match`, {
       method: "POST",
+    });
+
+    if (response.ok) {
+      formState = FormState.Success;
+
+      invalidateAll();
+    } else {
+      formState = FormState.Error;
+      errorMessage = (await response.json()).message;
+    }
+  }
+
+  async function resetMatches() {
+    if (!data.joined || !data.joined.isOwner) return;
+
+    const response = await fetch(`/api/group/${data.joined.group.code}/match`, {
+      method: "DELETE",
     });
 
     if (response.ok) {
@@ -109,33 +148,32 @@
             <TablerTrash />
           </button>
         {:else}
-          <button
-            class="btn"
-            onclick={async () => {
-              const response = await fetch(`/api/group/${data.joined.group.code}/user`, {
-                method: "DELETE",
-                body: JSON.stringify({
-                  userId: data.joined.self.id,
-                }),
-              });
-
-              if (response.ok) {
-                invalidateAll();
-              }
-            }}
-          >
-            Leave Group
-          </button>
+          <button class="btn" onclick={leaveGroupConfirm.prompt}>Leave Group</button>
         {/if}
       </div>
     </div>
     <ul class="flex flex-col gap-2">
       {#if data.joined.isOwner}
-        <div class="flex h-20 items-center justify-center container-dotted p-4">
+        <div class="flex min-h-20 flex-col items-center justify-center gap-2 container-dotted p-4">
           {#if !data.joined.group.closed}
-            <button class="btn" onclick={generateMatches}>Generate Matches</button>
+            <button class="btn" onclick={generateMatchesConfirm.prompt}>Generate Matches</button>
           {:else}
-            <button class="btn">Reset Matches</button>
+            <button class="btn" onclick={resetMatchesConfirm.prompt}>Reset Matches</button>
+          {/if}
+          {#if formState !== FormState.Idle}
+            <p class="text-sm font-medium text-base-content/80">
+              {#if formState === FormState.Error}
+                <span class="text-lg text-error">
+                  <TablerExclamationCircleFilled class="inline h-[1.2em] w-[1.2em] align-middle" />
+                </span>
+                {errorMessage}
+              {:else if formState === FormState.Success}
+                <span class="text-lg text-success">
+                  <TablerCircleCheckFilled class="inline h-[1.2em] w-[1.2em] align-middle" />
+                </span>
+                Updated my message
+              {/if}
+            </p>
           {/if}
         </div>
       {/if}
@@ -208,7 +246,7 @@
     />
   {/if}
 
-  <Modal bind:this={matchModal}>
+  <Modal bind:this={matchModal} title={data.joined.match === null ? "Error" : ""}>
     {#if data.joined.match !== null}
       <div class="flex flex-col items-center gap-2 text-center">
         <h2>Your Recipient</h2>
@@ -228,6 +266,10 @@
         </p>
         <p>{data.joined.group.description}</p>
       </div>
+    {:else}
+      <p class="text-sm text-base-content/80">
+        Unable to find match. Ask the group owner to generate new matches.
+      </p>
     {/if}
   </Modal>
 {:else}
@@ -285,3 +327,29 @@
     currentUserIdToRemove = null;
   }}
 />
+
+<Confirm
+  bind:this={leaveGroupConfirm}
+  title="Leave this group?"
+  body="You may not be able to rejoin the group if the owner generates matches."
+  action="Leave"
+  destructive
+  onaccept={leaveGroup}
+></Confirm>
+
+<Confirm
+  bind:this={generateMatchesConfirm}
+  title="Generate matches?"
+  body="This will generate random matches and notify all members via email. Make sure your restrictions are properly set before doing so."
+  action="Generate"
+  onaccept={generateMatches}
+></Confirm>
+
+<Confirm
+  bind:this={resetMatchesConfirm}
+  title="Reset matches?"
+  body="This will reopen the group, allowing anyone to join. Members will no longer be able to see their existing recipient."
+  action="Reset"
+  destructive
+  onaccept={resetMatches}
+></Confirm>

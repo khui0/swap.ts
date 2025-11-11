@@ -144,7 +144,7 @@
 
 <Confirm
   bind:this={deleteAccountConfirm}
-  title="Delete Account?"
+  title="Delete account?"
   body="This action is irreversible. Deleting your account will remove you from any groups you are a part of and will delete any groups you have created. If you choose to do so, you will receive a confirmation email."
   action="Send Confirmation"
   destructive
