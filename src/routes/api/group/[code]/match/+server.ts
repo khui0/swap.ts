@@ -9,6 +9,8 @@ import {
 import { error, json } from "@sveltejs/kit";
 import { eq } from "drizzle-orm";
 import { swap } from "./swap.js";
+import { sendGroupNotification } from "$lib/server/email.js";
+import { APP_URL } from "$env/static/private";
 
 export async function POST({ locals, params }) {
   if (!locals.session || !locals.user) {
@@ -19,7 +21,12 @@ export async function POST({ locals, params }) {
 
   const group = (
     await db
-      .select({ groupId: swapGroup.id, ownerId: swapGroup.ownerId })
+      .select({
+        groupId: swapGroup.id,
+        ownerId: swapGroup.ownerId,
+        name: swapGroup.name,
+        code: swapGroup.code,
+      })
       .from(swapGroup)
       .where(eq(swapGroup.code, code))
   )[0];
@@ -36,6 +43,7 @@ export async function POST({ locals, params }) {
     .select({
       id: user.id,
       name: user.name,
+      email: user.email,
       message: swapGroupMember.message,
       hiddenMessage: swapGroupMember.hiddenMessage,
     })
@@ -78,6 +86,16 @@ export async function POST({ locals, params }) {
         })
         .where(eq(swapGroup.id, group.groupId));
     });
+
+    await sendGroupNotification(
+      members.map((user) => ({
+        name: user.name,
+        email: user.email,
+      })),
+      group.name,
+      `${APP_URL}/g/${code}`,
+    );
+
     return json({}, { status: 201 });
   } catch {
     return error(500);

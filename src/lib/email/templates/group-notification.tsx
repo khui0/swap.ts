@@ -4,7 +4,6 @@ import {
   Container,
   Head,
   Html,
-  Link,
   Preview,
   Section,
   Tailwind,
@@ -12,7 +11,15 @@ import {
 } from "@react-email/components";
 import { APP_NAME } from "../../meta";
 
-export default function VerifyEmail({ name, url }: { name: string; url: string }) {
+export default function GroupNotification({
+  name,
+  groupName,
+  groupUrl,
+}: {
+  name: string;
+  groupName: string;
+  groupUrl: string;
+}) {
   return (
     <Html>
       <Head>
@@ -21,21 +28,22 @@ export default function VerifyEmail({ name, url }: { name: string; url: string }
       </Head>
       <Tailwind config={{}}>
         <Body className="bg-[#f5f5f5] p-4">
-          <Preview>Verify your email address</Preview>
+          <Preview>View your recipient</Preview>
           <Container className="rounded-xl bg-white px-4">
             <Section>
               <Text>Hi {name},</Text>
               <Text>
-                Thank you for signing up for {APP_NAME}. Click the button below to verify your email
-                address:
+                Your recipient for <strong>{groupName}</strong> has been chosen!
               </Text>
-              <Button className="rounded-lg bg-black px-4 py-3 font-semibold text-white" href={url}>
-                Verify Email
+              <Button
+                className="rounded-lg bg-black px-4 py-3 font-semibold text-white"
+                href={groupUrl}
+              >
+                View My Recipient
               </Button>
               <Text>
-                If the button above doesn't work, copy and paste this link into your browser:
+                If the button above doesn't work, sign into {APP_NAME} to view your recipient.
               </Text>
-              <Link href={url}>{url}</Link>
             </Section>
           </Container>
         </Body>
